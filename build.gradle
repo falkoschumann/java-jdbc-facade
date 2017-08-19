@@ -10,5 +10,10 @@ repositories {
 }
 
 dependencies {
+    compile(
+            'org.hsqldb:hsqldb:2.4.0',
+            'mysql:mysql-connector-java:5.1.43',
+            'org.postgresql:postgresql:42.1.4'
+    )
     testCompile 'junit:junit:4.+'
 }
