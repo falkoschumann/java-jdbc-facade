@@ -8,7 +8,7 @@ package de.muspellheim;
 import com.mysql.jdbc.jdbc2.optional.*;
 import org.junit.*;
 
-public class DDLTest {
+public class MySQLTest {
 
     @Before
     public void createSchema() throws Exception {

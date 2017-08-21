@@ -18,11 +18,19 @@ public class JDBCFacade {
 
     public void executeDDLCommand(DDLCommand command) {
         try (Connection connection = dataSource.getConnection()) {
-            ConnectionWrapper connectionWrapper = new ConnectionWrapper(connection);
-            command.execute(connectionWrapper);
+            executeCommand(command, connection);
         } catch (SQLException ex) {
-            throw new JDBCFacadeException("Error executing DDL command", ex);
+            handleSQLException(ex);
         }
+    }
+
+    protected void executeCommand(DDLCommand command, Connection connection) throws SQLException {
+        ConnectionWrapper connectionWrapper = new ConnectionWrapper(connection);
+        command.execute(connectionWrapper);
+    }
+
+    protected void handleSQLException(SQLException ex) {
+        throw new JDBCFacadeException("Error executing DDL command", ex);
     }
 
 }
