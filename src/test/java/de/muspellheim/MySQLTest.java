@@ -35,6 +35,7 @@ public class MySQLTest {
     public void createAndInitializeDatabase() {
         createTablesKundenverwaltung();
         createTablesArtikelverwaltung();
+        createTablesBestellwesen();
     }
 
     public void createTablesKundenverwaltung() {
@@ -109,8 +110,8 @@ public class MySQLTest {
                 "CREATE TABLE artikel ("
                         + "artikel_id INT UNSIGNED AUTO_INCREMENT,"
                         + "bezeichnung VARCHAR(255) NOT NULL DEFAULT '',"
-                        + "einzelpreis DECIMAL NOT NULL DEFAULT 0,"
-                        + "waehrung CHAR(3) NOT NULL DEFAULT '',"
+                        + "einzelpreis DECIMAL(14,6) NOT NULL DEFAULT 0.0,"
+                        + "waehrung CHAR(3) NOT NULL DEFAULT 'EUR',"
                         + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
                         + "PRIMARY KEY(artikel_id)"
                         + ")"
@@ -169,6 +170,90 @@ public class MySQLTest {
                         + "FOREIGN KEY (lieferant_id)"
                         + "  REFERENCES lieferant(lieferant_id)"
                         + "  ON UPDATE CASCADE"
+                        + "  ON DELETE RESTRICT"
+                        + ")"
+        ).execute());
+    }
+
+    public void createTablesBestellwesen() {
+        jdbc.executeDDLCommand(connection -> connection.statement(
+                "CREATE TABLE bestellung ("
+                        + "bestellung_id INT UNSIGNED AUTO_INCREMENT,"
+                        + "kunde_id INT UNSIGNED NULL DEFAULT 0,"
+                        + "adresse_id INT UNSIGNED NULL DEFAULT 0,"
+                        + "datum DATETIME NOT NULL DEFAULT 0,"
+                        + "status ENUM('offen', 'versendet', 'angekommen', 'retour', 'bezahlt') NOT NULL DEFAULT 'offen',"
+                        + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
+                        + "PRIMARY KEY(bestellung_id),"
+                        + "FOREIGN KEY (kunde_id)"
+                        + "  REFERENCES kunde(kunde_id)"
+                        + "  ON UPDATE RESTRICT"
+                        + "  ON DELETE RESTRICT,"
+                        + "FOREIGN KEY (adresse_id)"
+                        + "  REFERENCES adresse(adresse_id)"
+                        + "  ON UPDATE CASCADE"
+                        + "  ON DELETE RESTRICT"
+                        + ")"
+        ).execute());
+
+        jdbc.executeDDLCommand(connection -> connection.statement(
+                "CREATE TABLE bestell_position ("
+                        + "bestellung_id INT UNSIGNED,"
+                        + "position_nr INT UNSIGNED,"
+                        + "artikel_id INT UNSIGNED DEFAULT 0,"
+                        + "menge DECIMAL(14,6) NOT NULL DEFAULT 0.0,"
+                        + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
+                        + "PRIMARY KEY(bestellung_id, position_nr),"
+                        + "FOREIGN KEY (bestellung_id)"
+                        + "  REFERENCES bestellung(bestellung_id)"
+                        + "  ON UPDATE RESTRICT"
+                        + "  ON DELETE RESTRICT,"
+                        + "FOREIGN KEY (artikel_id)"
+                        + "  REFERENCES artikel(artikel_id)"
+                        + "  ON UPDATE RESTRICT"
+                        + "  ON DELETE RESTRICT"
+                        + ")"
+        ).execute());
+
+        jdbc.executeDDLCommand(connection -> connection.statement(
+                "CREATE TABLE rechnung ("
+                        + "rechnung_id INT UNSIGNED AUTO_INCREMENT,"
+                        + "kunde_id INT UNSIGNED NULL DEFAULT 0,"
+                        + "adresse_id INT UNSIGNED NULL DEFAULT 0,"
+                        + "bezahlart ENUM('lastschrift', 'rechnung', 'kredit', 'bar') NOT NULL DEFAULT 'lastschrift',"
+                        + "datum DATETIME NOT NULL DEFAULT 0,"
+                        + "status ENUM('offen', 'versendet', 'angekommen', 'retour', 'bezahlt') NOT NULL DEFAULT 'offen',"
+                        + "rabatt DECIMAL(6,2) NOT NULL DEFAULT 0.0,"
+                        + "skonto DECIMAL(6,2) NOT NULL DEFAULT 0.0,"
+                        + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
+                        + "PRIMARY KEY(rechnung_id),"
+                        + "FOREIGN KEY (kunde_id)"
+                        + "  REFERENCES kunde(kunde_id)"
+                        + "  ON UPDATE RESTRICT"
+                        + "  ON DELETE RESTRICT,"
+                        + "FOREIGN KEY (adresse_id)"
+                        + "  REFERENCES adresse(adresse_id)"
+                        + "  ON UPDATE RESTRICT"
+                        + "  ON DELETE RESTRICT"
+                        + ")"
+        ).execute());
+
+        jdbc.executeDDLCommand(connection -> connection.statement(
+                "CREATE TABLE rechnung_position ("
+                        + "rechnung_id INT UNSIGNED,"
+                        + "position_nr INT UNSIGNED,"
+                        + "artikel_id INT UNSIGNED DEFAULT 0,"
+                        + "menge DECIMAL(14,6) NOT NULL DEFAULT 0.0,"
+                        + "rabatt DECIMAL(6,2) NOT NULL DEFAULT 0.0,"
+                        + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
+                        + "PRIMARY KEY(rechnung_id, position_nr),"
+                        + "FOREIGN KEY (rechnung_id)"
+                        + "  REFERENCES rechnung(rechnung_id)"
+                        + "  ON UPDATE RESTRICT"
+                        + "  ON DELETE RESTRICT,"
+                        + "FOREIGN KEY (artikel_id)"
+                        + "  REFERENCES artikel(artikel_id)"
+                        + "  ON UPDATE RESTRICT"
                         + "  ON DELETE RESTRICT"
                         + ")"
         ).execute());
