@@ -1,4 +1,4 @@
-JDBC Stream
+JDBC Facade
 ===========
 
-A fluent JDBC API using Java 8 streams.
+A fluent API as facade for JDBC.
