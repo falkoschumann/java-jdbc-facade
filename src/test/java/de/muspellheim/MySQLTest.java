@@ -33,7 +33,7 @@ public class MySQLTest {
 
     private int getPort() {
         String port = System.getenv("MYSQL_PORT");
-        return port != null ? Integer.parseInt(port) : 8889;
+        return port != null ? Integer.parseInt(port) : 3306;
     }
 
     private String getUser() {
@@ -42,8 +42,8 @@ public class MySQLTest {
     }
 
     private String getPassword() {
-        String password = System.getenv("MYSQL_PASSOWRD");
-        return password != null ? password : "root";
+        String password = System.getenv("MYSQL_PASSWORD");
+        return password != null ? password : "";
     }
 
     @Test

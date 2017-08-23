@@ -17,7 +17,3 @@ dependencies {
     )
     testCompile 'junit:junit:4.+'
 }
-
-test {
-    testLogging.showStandardStreams = true
-}
