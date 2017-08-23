@@ -30,10 +30,6 @@ public class JDBCFacade {
     }
 
     protected void handleSQLException(SQLException ex) {
-        System.out.println("Error: " + ex);
-        for (Throwable t : ex) {
-            System.out.println("Next exception: " + t);
-        }
         throw new UncheckedSQLException("Error executing DDL command", ex);
     }
 
