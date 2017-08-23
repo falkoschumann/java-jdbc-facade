@@ -15,20 +15,35 @@ public class MySQLTest {
     @Before
     public void createSchema() {
         MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
-        dataSource.setPort(8889);
-        dataSource.setUser("root");
-        dataSource.setPassword("");
+        dataSource.setPort(getPort());
+        dataSource.setUser(getUser());
+        dataSource.setPassword(getPassword());
 
         jdbc = new JDBCFacade(dataSource);
         jdbc.executeDDLCommand(connection -> connection.statement("DROP SCHEMA IF EXISTS oshop").execute());
         jdbc.executeDDLCommand(connection -> connection.statement("CREATE SCHEMA oshop CHARACTER SET utf8 COLLATE utf8_unicode_ci").execute());
 
         dataSource = new MysqlConnectionPoolDataSource();
-        dataSource.setPort(8889);
-        dataSource.setUser("root");
-        dataSource.setPassword("root");
+        dataSource.setPort(getPort());
+        dataSource.setUser(getUser());
+        dataSource.setPassword(getPassword());
         dataSource.setDatabaseName("oshop");
         jdbc = new JDBCFacade(dataSource);
+    }
+
+    private int getPort() {
+        String port = System.getenv("MYSQL_PORT");
+        return port != null ? Integer.parseInt(port) : 8889;
+    }
+
+    private String getUser() {
+        String user = System.getenv("MYSQL_USER");
+        return user != null ? user : "root";
+    }
+
+    private String getPassword() {
+        String password = System.getenv("MYSQL_PASSOWRD");
+        return password != null ? password : "root";
     }
 
     @Test
