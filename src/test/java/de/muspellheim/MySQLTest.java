@@ -17,7 +17,7 @@ public class MySQLTest {
         MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
         dataSource.setPort(8889);
         dataSource.setUser("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("");
 
         jdbc = new JDBCFacade(dataSource);
         jdbc.executeDDLCommand(connection -> connection.statement("DROP SCHEMA IF EXISTS oshop").execute());
