@@ -66,6 +66,9 @@ public class MySQLTest {
                         + "PRIMARY KEY(adresse_id)"
                         + ")"
         ).execute());
+        jdbc.executeDDLCommand(connection -> connection.statement(
+                "CREATE INDEX idx_adresse_dublette ON adresse(strasse(100), hnr(100), plz)"
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE kunde ("
@@ -90,7 +93,7 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_kunde_nachname_vorname ON kunde(nachname, vorname)"
-        ));
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE bank ("
@@ -103,7 +106,7 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_bank_bankname ON bank(bankname)"
-        ));
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE bankverbindung ("
@@ -126,10 +129,10 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_bankverbindung_bankid_kontonummer ON bankverbindung(bank_id, kontonummer)"
-        ));
+        ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_bankverbindung_iban ON bankverbindung(iban)"
-        ));
+                "CREATE UNIQUE INDEX idx_bankverbindung_iban ON bankverbindung(iban)"
+        ).execute());
     }
 
     private void createTablesArtikelverwaltung() {
@@ -145,7 +148,7 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_artikel_bezeichnung ON artikel(bezeichnung)"
-        ));
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE warengruppe ("
@@ -157,7 +160,7 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_warengruppe_bezeichnung ON warengruppe(bezeichnung)"
-        ));
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel_nm_warengruppe ("
@@ -192,7 +195,7 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_lieferant_firmenname ON lieferant(firmenname)"
-        ));
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel_nm_lieferant ("
@@ -233,7 +236,7 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_bestellung_kundeid_datum ON bestellung(kunde_id, datum)"
-        ));
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE bestell_position ("
@@ -278,7 +281,7 @@ public class MySQLTest {
         ).execute());
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_rechnung_kundeid_datum ON rechnung(kunde_id, datum)"
-        ));
+        ).execute());
 
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE rechnung_position ("
