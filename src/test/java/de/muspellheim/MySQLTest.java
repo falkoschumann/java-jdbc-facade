@@ -38,7 +38,7 @@ public class MySQLTest {
         createTablesBestellwesen();
     }
 
-    public void createTablesKundenverwaltung() {
+    private void createTablesKundenverwaltung() {
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE adresse ("
                         + "adresse_id INT UNSIGNED AUTO_INCREMENT,"
@@ -117,7 +117,7 @@ public class MySQLTest {
         ));
     }
 
-    public void createTablesArtikelverwaltung() {
+    private void createTablesArtikelverwaltung() {
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel ("
                         + "artikel_id INT UNSIGNED AUTO_INCREMENT,"
@@ -196,7 +196,7 @@ public class MySQLTest {
         ).execute());
     }
 
-    public void createTablesBestellwesen() {
+    private void createTablesBestellwesen() {
         jdbc.executeDDLCommand(connection -> connection.statement(
                 "CREATE TABLE bestellung ("
                         + "bestellung_id INT UNSIGNED AUTO_INCREMENT,"
