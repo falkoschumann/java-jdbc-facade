@@ -5,9 +5,9 @@
 
 package de.muspellheim;
 
-public class JDBCFacadeException extends RuntimeException {
+public class UncheckedSQLException extends RuntimeException {
 
-    public JDBCFacadeException(String message, Throwable cause) {
+    public UncheckedSQLException(String message, Throwable cause) {
         super(message, cause);
     }
 

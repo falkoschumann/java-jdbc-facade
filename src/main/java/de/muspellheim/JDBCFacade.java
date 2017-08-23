@@ -30,7 +30,7 @@ public class JDBCFacade {
     }
 
     protected void handleSQLException(SQLException ex) {
-        throw new JDBCFacadeException("Error executing DDL command", ex);
+        throw new UncheckedSQLException("Error executing DDL command", ex);
     }
 
 }
