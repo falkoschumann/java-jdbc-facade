@@ -367,4 +367,88 @@ public class MySQLTest {
         ).execute());
     }
 
+    @Test
+    public void test04InsertArtikelWarengruppen() {
+        jdbc.executeSQLCommand(connection -> {
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=3001,"
+                            + "warengruppe_id=1"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=3005,"
+                            + "warengruppe_id=1"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=3006,"
+                            + "warengruppe_id=1"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=3007,"
+                            + "warengruppe_id=1"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=3010,"
+                            + "warengruppe_id=1"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=7856,"
+                            + "warengruppe_id=2"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=7856,"
+                            + "warengruppe_id=3"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=7863,"
+                            + "warengruppe_id=2"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=7863,"
+                            + "warengruppe_id=3"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=9010,"
+                            + "warengruppe_id=3"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=9010,"
+                            + "warengruppe_id=4"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=9015,"
+                            + "warengruppe_id=3"
+            ).execute();
+            connection.statement(
+                    "INSERT INTO artikel_nm_warengruppe "
+                            + "SET "
+                            + "artikel_id=9015,"
+                            + "warengruppe_id=4"
+            ).execute();
+        });
+    }
+
 }
