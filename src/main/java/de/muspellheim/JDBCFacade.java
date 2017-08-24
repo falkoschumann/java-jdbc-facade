@@ -30,8 +30,10 @@ public class JDBCFacade {
     }
 
     protected void handleSQLException(SQLException ex) {
+        // TODO remove debug output
         for (Throwable t : ex)
             System.err.println(t);
+
         throw new UncheckedSQLException("Error executing SQL command", ex);
     }
 
