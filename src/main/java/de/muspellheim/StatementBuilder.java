@@ -22,8 +22,16 @@ public class StatementBuilder {
 
         // TODO remove debug output
         if (statement.getWarnings() != null) {
-            for (Throwable t : statement.getWarnings())
-                System.err.println(t);
+            for (Throwable t : statement.getWarnings()) {
+                String msg = "";
+                if (t instanceof SQLException) {
+                    SQLException ex = (SQLException) t;
+                    msg += "SQL state: " + ex.getSQLState() + ", error code: " + ex.getErrorCode() + " - ";
+                }
+
+                msg += t;
+                System.err.println("WARNING: " + msg);
+            }
         }
     }
 

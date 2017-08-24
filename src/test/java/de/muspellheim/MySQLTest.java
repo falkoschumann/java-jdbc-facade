@@ -7,19 +7,21 @@ package de.muspellheim;
 
 import com.mysql.jdbc.jdbc2.optional.*;
 import org.junit.*;
+import org.junit.runners.*;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MySQLTest {
 
     private JDBCFacade jdbc;
 
-    @Before
-    public void createSchema() {
-        MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
+    @BeforeClass
+    public static void createSchema() {
+        MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
         dataSource.setPort(getPort());
         dataSource.setUser(getUser());
         dataSource.setPassword(getPassword());
 
-        jdbc = new JDBCFacade(dataSource);
+        JDBCFacade jdbc = new JDBCFacade(dataSource);
         jdbc.executeSQLCommand(connection -> connection.statement("DROP SCHEMA IF EXISTS oshop").execute());
         jdbc.executeSQLCommand(connection -> connection.statement("CREATE SCHEMA oshop CHARACTER SET utf8 COLLATE utf8_unicode_ci").execute());
 
@@ -28,35 +30,29 @@ public class MySQLTest {
         dataSource.setUser(getUser());
         dataSource.setPassword(getPassword());
         dataSource.setDatabaseName("oshop");
+
         jdbc = new JDBCFacade(dataSource);
+        createTablesKundenverwaltung(jdbc);
+        createTablesArtikelverwaltung(jdbc);
+        createTablesBestellwesen(jdbc);
     }
 
-    private int getPort() {
+    private static int getPort() {
         String port = System.getenv("MYSQL_PORT");
         return port != null ? Integer.parseInt(port) : 3306;
     }
 
-    private String getUser() {
+    private static String getUser() {
         String user = System.getenv("MYSQL_USER");
         return user != null ? user : "root";
     }
 
-    private String getPassword() {
+    private static String getPassword() {
         String password = System.getenv("MYSQL_PASSWORD");
         return password != null ? password : "";
     }
 
-    @Test
-    public void createAndInitializeDatabase() {
-        createTablesKundenverwaltung();
-        createTablesArtikelverwaltung();
-        createTablesBestellwesen();
-
-        importArtikel01();
-        importArtikel02();
-    }
-
-    private void createTablesKundenverwaltung() {
+    private static void createTablesKundenverwaltung(JDBCFacade jdbc) {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE adresse ("
                         + "adresse_id INT UNSIGNED AUTO_INCREMENT,"
@@ -138,7 +134,7 @@ public class MySQLTest {
         ).execute());
     }
 
-    private void createTablesArtikelverwaltung() {
+    private static void createTablesArtikelverwaltung(JDBCFacade jdbc) {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel ("
                         + "artikel_id INT UNSIGNED AUTO_INCREMENT,"
@@ -217,7 +213,7 @@ public class MySQLTest {
         ).execute());
     }
 
-    private void createTablesBestellwesen() {
+    private static void createTablesBestellwesen(JDBCFacade jdbc) {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bestellung ("
                         + "bestellung_id INT UNSIGNED AUTO_INCREMENT,"
@@ -307,6 +303,22 @@ public class MySQLTest {
         ).execute());
     }
 
+    @Before
+    public void connectWithDatabase() {
+        MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
+        dataSource.setPort(getPort());
+        dataSource.setUser(getUser());
+        dataSource.setPassword(getPassword());
+        dataSource.setDatabaseName("oshop");
+        this.jdbc = new JDBCFacade(dataSource);
+    }
+
+    @Test
+    public void test01ImportArtikel() {
+        importArtikel01();
+        importArtikel02();
+    }
+
     private void importArtikel01() {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "LOAD DATA LOCAL INFILE 'src/example/data/artikel01.csv' "
@@ -328,6 +340,30 @@ public class MySQLTest {
                         + "IGNORE 1 LINES "
                         + "(artikel_id, bezeichnung, einzelpreis, waehrung) "
                         + "SET deleted=0"
+        ).execute());
+    }
+
+    @Test
+    public void test02InsertWarengruppen() {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "INSERT INTO warengruppe (bezeichnung, deleted) "
+                        + "VALUES "
+                        + "('Bürobedarf', 0),"
+                        + "('Pflanzen', 0),"
+                        + "('Gartenbedarf', 0),"
+                        + "('Werkzeug', 0)"
+        ).execute());
+    }
+
+    @Test(expected = UncheckedSQLException.class)
+    public void test03InsertWarengruppen() {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "INSERT INTO warengruppe (warengruppe_id, bezeichnung) "
+                        + "VALUES "
+                        + "(1, 'Bürobedarf'),"
+                        + "(2, 'Pflanzen'),"
+                        + "(3, 'Gartenbedarf'),"
+                        + "(4, 'Werkzeug')"
         ).execute());
     }
 

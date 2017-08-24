@@ -26,8 +26,16 @@ public class JDBCFacade {
 
     protected void handleSQLException(SQLException ex) {
         // TODO remove debug output
-        for (Throwable t : ex)
-            System.err.println(t);
+        for (Throwable t : ex) {
+            String msg = "";
+            if (t instanceof SQLException) {
+                SQLException e = (SQLException) t;
+                msg += "SQL state: " + e.getSQLState() + ", error code: " + e.getErrorCode() + " - ";
+            }
+
+            msg += t;
+            System.err.println("ERROR: " + msg);
+        }
 
         throw new UncheckedSQLException("Error executing SQL command", ex);
     }
