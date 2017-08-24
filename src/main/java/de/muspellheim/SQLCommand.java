@@ -9,6 +9,6 @@ import java.sql.*;
 
 public interface SQLCommand {
 
-    void execute(ConnectionWrapper connection) throws SQLException;
+    void execute(ConnectionBuilder connection) throws SQLException;
 
 }

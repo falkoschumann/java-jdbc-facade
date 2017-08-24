@@ -17,16 +17,11 @@ public class JDBCFacade {
     }
 
     public void executeSQLCommand(SQLCommand command) {
-        try (Connection connection = dataSource.getConnection()) {
-            executeCommand(command, connection);
+        try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
+            command.execute(connection);
         } catch (SQLException ex) {
             handleSQLException(ex);
         }
-    }
-
-    protected void executeCommand(SQLCommand command, Connection connection) throws SQLException {
-        ConnectionWrapper connectionWrapper = new ConnectionWrapper(connection);
-        command.execute(connectionWrapper);
     }
 
     protected void handleSQLException(SQLException ex) {
