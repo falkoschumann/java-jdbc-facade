@@ -52,7 +52,8 @@ public class MySQLTest {
         createTablesArtikelverwaltung();
         createTablesBestellwesen();
 
-        importArtikel();
+        importArtikel01();
+        importArtikel02();
     }
 
     private void createTablesKundenverwaltung() {
@@ -306,9 +307,21 @@ public class MySQLTest {
         ).execute());
     }
 
-    private void importArtikel() {
+    private void importArtikel01() {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "LOAD DATA LOCAL INFILE 'src/example/data/artikel01.csv' "
+                        + "INTO TABLE artikel "
+                        + "FIELDS TERMINATED BY ';' "
+                        + "LINES TERMINATED BY '\n' "
+                        + "IGNORE 1 LINES "
+                        + "(artikel_id, bezeichnung, einzelpreis, waehrung) "
+                        + "SET deleted=0"
+        ).execute());
+    }
+
+    private void importArtikel02() {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "LOAD DATA LOCAL INFILE 'src/example/data/artikel02.csv' REPLACE "
                         + "INTO TABLE artikel "
                         + "FIELDS TERMINATED BY ';' "
                         + "LINES TERMINATED BY '\n' "
