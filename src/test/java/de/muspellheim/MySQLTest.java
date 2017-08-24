@@ -451,4 +451,13 @@ public class MySQLTest {
         });
     }
 
+    @Test
+    public void test05AlterTableKundeAlterColumnBezahlart() {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "ALTER TABLE kunde "
+                        + "MODIFY "
+                        + "bezahlart ENUM('rechnung', 'bankeinzug', 'nachname') DEFAULT 'rechnung'"
+        ).execute());
+    }
+
 }
