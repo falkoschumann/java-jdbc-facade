@@ -16,7 +16,7 @@ public class JDBCFacade {
         this.dataSource = dataSource;
     }
 
-    public void executeDDLCommand(DDLCommand command) {
+    public void executeSQLCommand(SQLCommand command) {
         try (Connection connection = dataSource.getConnection()) {
             executeCommand(command, connection);
         } catch (SQLException ex) {
@@ -24,13 +24,15 @@ public class JDBCFacade {
         }
     }
 
-    protected void executeCommand(DDLCommand command, Connection connection) throws SQLException {
+    protected void executeCommand(SQLCommand command, Connection connection) throws SQLException {
         ConnectionWrapper connectionWrapper = new ConnectionWrapper(connection);
         command.execute(connectionWrapper);
     }
 
     protected void handleSQLException(SQLException ex) {
-        throw new UncheckedSQLException("Error executing DDL command", ex);
+        for (Throwable t : ex)
+            System.err.println(t);
+        throw new UncheckedSQLException("Error executing SQL command", ex);
     }
 
 }

@@ -7,7 +7,7 @@ package de.muspellheim;
 
 import java.sql.*;
 
-public interface DDLCommand {
+public interface SQLCommand {
 
     void execute(ConnectionWrapper connection) throws SQLException;
 

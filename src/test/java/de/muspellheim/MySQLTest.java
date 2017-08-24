@@ -20,8 +20,8 @@ public class MySQLTest {
         dataSource.setPassword(getPassword());
 
         jdbc = new JDBCFacade(dataSource);
-        jdbc.executeDDLCommand(connection -> connection.statement("DROP SCHEMA IF EXISTS oshop").execute());
-        jdbc.executeDDLCommand(connection -> connection.statement("CREATE SCHEMA oshop CHARACTER SET utf8 COLLATE utf8_unicode_ci").execute());
+        jdbc.executeSQLCommand(connection -> connection.statement("DROP SCHEMA IF EXISTS oshop").execute());
+        jdbc.executeSQLCommand(connection -> connection.statement("CREATE SCHEMA oshop CHARACTER SET utf8 COLLATE utf8_unicode_ci").execute());
 
         dataSource = new MysqlConnectionPoolDataSource();
         dataSource.setPort(getPort());
@@ -51,10 +51,12 @@ public class MySQLTest {
         createTablesKundenverwaltung();
         createTablesArtikelverwaltung();
         createTablesBestellwesen();
+
+        importArtikel();
     }
 
     private void createTablesKundenverwaltung() {
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE adresse ("
                         + "adresse_id INT UNSIGNED AUTO_INCREMENT,"
                         + "strasse VARCHAR(255) NOT NULL DEFAULT '',"
@@ -66,11 +68,11 @@ public class MySQLTest {
                         + "PRIMARY KEY(adresse_id)"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_adresse_dublette ON adresse(strasse(100), hnr(100), plz)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE kunde ("
                         + "kunde_id INT UNSIGNED AUTO_INCREMENT,"
                         + "nachname VARCHAR(255) NOT NULL DEFAULT '',"
@@ -91,11 +93,11 @@ public class MySQLTest {
                         + "  ON DELETE SET NULL"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_kunde_nachname_vorname ON kunde(nachname, vorname)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bank ("
                         + "bank_id CHAR(12),"
                         + "bankname VARCHAR(255) NOT NULL DEFAULT '',"
@@ -104,11 +106,11 @@ public class MySQLTest {
                         + "PRIMARY KEY(bank_id)"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_bank_bankname ON bank(bankname)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bankverbindung ("
                         + "kunde_id INT UNSIGNED,"
                         + "bankverbindung_nr INT UNSIGNED,"
@@ -127,16 +129,16 @@ public class MySQLTest {
                         + "  ON DELETE RESTRICT"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_bankverbindung_bankid_kontonummer ON bankverbindung(bank_id, kontonummer)"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE UNIQUE INDEX idx_bankverbindung_iban ON bankverbindung(iban)"
         ).execute());
     }
 
     private void createTablesArtikelverwaltung() {
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel ("
                         + "artikel_id INT UNSIGNED AUTO_INCREMENT,"
                         + "bezeichnung VARCHAR(255) NOT NULL DEFAULT '',"
@@ -146,11 +148,11 @@ public class MySQLTest {
                         + "PRIMARY KEY(artikel_id)"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_artikel_bezeichnung ON artikel(bezeichnung)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE warengruppe ("
                         + "warengruppe_id INT UNSIGNED AUTO_INCREMENT,"
                         + "bezeichnung VARCHAR(255) NOT NULL DEFAULT '',"
@@ -158,11 +160,11 @@ public class MySQLTest {
                         + "PRIMARY KEY(warengruppe_id)"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_warengruppe_bezeichnung ON warengruppe(bezeichnung)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel_nm_warengruppe ("
                         + "artikel_id INT UNSIGNED,"
                         + "warengruppe_id INT UNSIGNED,"
@@ -178,7 +180,7 @@ public class MySQLTest {
                         + ")"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE lieferant ("
                         + "lieferant_id INT UNSIGNED AUTO_INCREMENT,"
                         + "nachname VARCHAR(255) NOT NULL DEFAULT '',"
@@ -193,11 +195,11 @@ public class MySQLTest {
                         + "  ON DELETE RESTRICT"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_lieferant_firmenname ON lieferant(firmenname)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel_nm_lieferant ("
                         + "artikel_id INT UNSIGNED,"
                         + "lieferant_id INT UNSIGNED,"
@@ -215,7 +217,7 @@ public class MySQLTest {
     }
 
     private void createTablesBestellwesen() {
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bestellung ("
                         + "bestellung_id INT UNSIGNED AUTO_INCREMENT,"
                         + "kunde_id INT UNSIGNED NULL DEFAULT 0,"
@@ -234,11 +236,11 @@ public class MySQLTest {
                         + "  ON DELETE RESTRICT"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_bestellung_kundeid_datum ON bestellung(kunde_id, datum)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bestell_position ("
                         + "bestellung_id INT UNSIGNED,"
                         + "position_nr INT UNSIGNED,"
@@ -257,7 +259,7 @@ public class MySQLTest {
                         + ")"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE rechnung ("
                         + "rechnung_id INT UNSIGNED AUTO_INCREMENT,"
                         + "kunde_id INT UNSIGNED NULL DEFAULT 0,"
@@ -279,11 +281,11 @@ public class MySQLTest {
                         + "  ON DELETE RESTRICT"
                         + ")"
         ).execute());
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE INDEX idx_rechnung_kundeid_datum ON rechnung(kunde_id, datum)"
         ).execute());
 
-        jdbc.executeDDLCommand(connection -> connection.statement(
+        jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE rechnung_position ("
                         + "rechnung_id INT UNSIGNED,"
                         + "position_nr INT UNSIGNED,"
@@ -301,6 +303,18 @@ public class MySQLTest {
                         + "  ON UPDATE RESTRICT"
                         + "  ON DELETE RESTRICT"
                         + ")"
+        ).execute());
+    }
+
+    private void importArtikel() {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "LOAD DATA LOCAL INFILE 'src/example/data/artikel01.csv' "
+                        + "INTO TABLE artikel "
+                        + "FIELDS TERMINATED BY ';' "
+                        + "LINES TERMINATED BY '\n' "
+                        + "IGNORE 1 LINES "
+                        + "(artikel_id, bezeichnung, einzelpreis, waehrung) "
+                        + "SET deleted=0"
         ).execute());
     }
 

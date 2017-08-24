@@ -19,6 +19,10 @@ public class StatementBuilder {
 
     public void execute() throws SQLException {
         statement.execute(sql);
+        if (statement.getWarnings() != null) {
+            for (Throwable t : statement.getWarnings())
+                System.err.println(t);
+        }
     }
 
 }
