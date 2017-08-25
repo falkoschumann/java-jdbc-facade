@@ -20,12 +20,25 @@ public class JDBCFacade {
         try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
             command.execute(connection);
         } catch (SQLException ex) {
-            handleSQLException(ex);
+            // TODO remove debug output
+            printError(ex);
+
+            throw new UncheckedSQLException("SQL command failed: " + ex.getLocalizedMessage(), ex);
         }
     }
 
-    protected void handleSQLException(SQLException ex) {
-        // TODO remove debug output
+    public <T> T executeSQLQuery(SQLQuery<T> command) {
+        try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
+            return command.execute(connection);
+        } catch (SQLException ex) {
+            // TODO remove debug output
+            printError(ex);
+
+            throw new UncheckedSQLException("SQL command failed: " + ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    static void printError(SQLException ex) {
         for (Throwable t : ex) {
             String msg = "";
             if (t instanceof SQLException) {
@@ -36,8 +49,21 @@ public class JDBCFacade {
             msg += t;
             System.err.println("ERROR: " + msg);
         }
+    }
 
-        throw new UncheckedSQLException("SQL command failed: " + ex.getLocalizedMessage(), ex);
+    static void printWarnings(Statement statement) throws SQLException {
+        if (statement.getWarnings() != null) {
+            for (Throwable t : statement.getWarnings()) {
+                String msg = "";
+                if (t instanceof SQLException) {
+                    SQLException ex = (SQLException) t;
+                    msg += "SQL state: " + ex.getSQLState() + ", error code: " + ex.getErrorCode() + " - ";
+                }
+
+                msg += t;
+                System.err.println("WARNING: " + msg);
+            }
+        }
     }
 
 }

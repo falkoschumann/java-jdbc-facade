@@ -20,6 +20,10 @@ public class ConnectionBuilder implements AutoCloseable {
         return new StatementBuilder(connection, sql);
     }
 
+    public PreparedStatementBuilder preparedStatement(String sql) throws SQLException {
+        return new PreparedStatementBuilder(connection, sql);
+    }
+
     @Override
     public void close() throws SQLException {
         connection.close();

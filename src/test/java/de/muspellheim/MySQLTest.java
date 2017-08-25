@@ -9,6 +9,10 @@ import com.mysql.jdbc.jdbc2.optional.*;
 import org.junit.*;
 import org.junit.runners.*;
 
+import java.util.*;
+
+import static org.junit.Assert.*;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MySQLTest {
 
@@ -503,7 +507,7 @@ public class MySQLTest {
                         "(2, 2, '2012-03-23 16:11:00')"
         ).execute());
 
-        jdbc.executeSQLCommand(connection -> connection.statement(
+        int updateCount = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "INSERT INTO bestellung_position (bestellung_id, position_nr, artikel_id, menge) " +
                         "VALUES " +
                         "(1, 1, 7856, 30)," +
@@ -512,6 +516,21 @@ public class MySQLTest {
                         "(2, 1, 7856, 10)," +
                         "(2, 2, 9010, 5)"
         ).execute());
-    }
 
+        assertEquals(5, updateCount);
+    }
+/*
+    @Test
+    public void test08SelectKunde() {
+        List result = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
+                "SELECT * FROM artikel "
+                        + "WHERE einzelpreis BETWEEN ? AND ?"
+        )
+                .withParam(1.00)
+                .withParam(15.00)
+                .executeQuery());
+
+        assertEquals(6, result.size());
+    }
+*/
 }
