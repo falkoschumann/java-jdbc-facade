@@ -238,7 +238,7 @@ public class MySQLTest {
         ).execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE TABLE bestell_position ("
+                "CREATE TABLE bestellung_position ("
                         + "bestellung_id INT UNSIGNED,"
                         + "position_nr INT UNSIGNED,"
                         + "artikel_id INT UNSIGNED DEFAULT 0,"
@@ -457,6 +457,60 @@ public class MySQLTest {
                 "ALTER TABLE kunde "
                         + "MODIFY "
                         + "bezahlart ENUM('rechnung', 'bankeinzug', 'nachname') DEFAULT 'rechnung'"
+        ).execute());
+    }
+
+    @Test
+    public void test06InsertAdressen() {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "INSERT INTO adresse (adresse_id, strasse, hnr, lkz, plz, ort) " +
+                        "VALUES " +
+                        "(1, 'Beutelhaldenweg', '5', 'AL', '67676', 'Hobbingen')," +
+                        "(2, 'Beutelhaldenweg', '1', 'AL', '67676', 'Hobbingen')," +
+                        "(3, 'Auf der Feste',   '1', 'GO', '54786', 'Minas Tirith')," +
+                        "(4, 'Letztes Haus',    '4', 'ER', '87567', 'Bruchtal')," +
+                        "(5, 'Baradur',         '1', 'MO', '62519', 'Lugburz')," +
+                        "(10, 'Hochstrasse',    '4a','DE', '44879', 'Bochum')," +
+                        "(11, 'Industriegebiet','8', 'DE', '44878', 'Bochum')"
+        ).execute());
+
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "INSERT INTO kunde (kunde_id, rechnung_adresse_id, nachname, vorname, art) " +
+                        "VALUES " +
+                        "(1, 1, 'Gamdschie',   'Samweis', 'prv')," +
+                        "(2, 2, 'Beutlin',     'Frodo',   'prv')," +
+                        "(3, 2, 'Beutlin',     'Bilbo',   'prv')," +
+                        "(4, 3, 'Telcontar',   'Elessar', 'prv')," +
+                        "(5, 4, 'Earendilionn','Elrond',  'gsch')"
+        ).execute());
+
+        jdbc.executeSQLCommand(connection -> {
+            connection.statement(
+                    "UPDATE kunde SET liefer_adresse_id = 2 WHERE kunde_id = 1"
+            ).execute();
+            connection.statement(
+                    "UPDATE kunde SET liefer_adresse_id = 4 WHERE kunde_id = 3;"
+            ).execute();
+        });
+    }
+
+    @Test
+    public void test07InsertBestellungen() {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "INSERT INTO bestellung (kunde_id, adresse_id, datum) " +
+                        "VALUES " +
+                        "(1, 1, '2012-03-24 17:41:00')," +
+                        "(2, 2, '2012-03-23 16:11:00')"
+        ).execute());
+
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "INSERT INTO bestellung_position (bestellung_id, position_nr, artikel_id, menge) " +
+                        "VALUES " +
+                        "(1, 1, 7856, 30)," +
+                        "(1, 2, 7863, 50)," +
+                        "(1, 3, 9015, 1)," +
+                        "(2, 1, 7856, 10)," +
+                        "(2, 2, 9010, 5)"
         ).execute());
     }
 
