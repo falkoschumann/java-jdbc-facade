@@ -37,7 +37,7 @@ public class JDBCFacade {
             System.err.println("ERROR: " + msg);
         }
 
-        throw new UncheckedSQLException("Error executing SQL command", ex);
+        throw new UncheckedSQLException("SQL command failed: " + ex.getLocalizedMessage(), ex);
     }
 
 }
