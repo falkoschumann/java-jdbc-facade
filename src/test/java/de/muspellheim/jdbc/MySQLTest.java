@@ -351,7 +351,7 @@ public class MySQLTest {
 
     @Test
     public void test02InsertWarengruppen() {
-        jdbc.executeSQLCommand(connection -> connection.statement(
+        int updateCount = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "INSERT INTO warengruppe (bezeichnung, deleted) "
                         + "VALUES "
                         + "('Bürobedarf', 0),"
@@ -359,11 +359,13 @@ public class MySQLTest {
                         + "('Gartenbedarf', 0),"
                         + "('Werkzeug', 0)")
                 .execute());
+
+        assertEquals(4, updateCount);
     }
 
     @Test(expected = UncheckedSQLException.class)
     public void test03InsertWarengruppen() {
-        jdbc.executeSQLCommand(connection -> connection.statement(
+        int updateCount = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "INSERT INTO warengruppe (warengruppe_id, bezeichnung) "
                         + "VALUES "
                         + "(1, 'Bürobedarf'),"
@@ -371,88 +373,64 @@ public class MySQLTest {
                         + "(3, 'Gartenbedarf'),"
                         + "(4, 'Werkzeug')")
                 .execute());
+
+        fail();
     }
 
     @Test
     public void test04InsertArtikelWarengruppen() {
         jdbc.executeSQLCommand(connection -> {
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=3001,"
-                            + "warengruppe_id=1")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(3001)
+                    .withParam(1)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=3005,"
-                            + "warengruppe_id=1")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(3005)
+                    .withParam(1)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=3006,"
-                            + "warengruppe_id=1")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(3006)
+                    .withParam(1)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=3007,"
-                            + "warengruppe_id=1")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(3007)
+                    .withParam(1)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=3010,"
-                            + "warengruppe_id=1")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(3010)
+                    .withParam(1)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=7856,"
-                            + "warengruppe_id=2")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(7856)
+                    .withParam(2)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=7856,"
-                            + "warengruppe_id=3")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(7856)
+                    .withParam(3)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=7863,"
-                            + "warengruppe_id=2")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(7863)
+                    .withParam(2)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=7863,"
-                            + "warengruppe_id=3")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(7863)
+                    .withParam(3)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=9010,"
-                            + "warengruppe_id=3")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(9010)
+                    .withParam(3)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=9010,"
-                            + "warengruppe_id=4")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(9010)
+                    .withParam(4)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=9015,"
-                            + "warengruppe_id=3")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(9015)
+                    .withParam(3)
                     .execute();
-            connection.statement(
-                    "INSERT INTO artikel_nm_warengruppe "
-                            + "SET "
-                            + "artikel_id=9015,"
-                            + "warengruppe_id=4")
+            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
+                    .withParam(9015)
+                    .withParam(4)
                     .execute();
         });
     }
