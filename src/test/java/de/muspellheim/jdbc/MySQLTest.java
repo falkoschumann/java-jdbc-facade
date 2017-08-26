@@ -406,7 +406,7 @@ public class MySQLTest {
     }
 
     @Test
-    public void test06InsertAdressen() {
+    public void test06InsertKunden() {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "INSERT INTO adresse (adresse_id, strasse, hnr, lkz, plz, ort) " +
                         "VALUES " +
