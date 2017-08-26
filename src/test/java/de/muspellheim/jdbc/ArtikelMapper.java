@@ -9,7 +9,7 @@ import java.sql.*;
 
 public class ArtikelMapper {
 
-    public static Artikel map(ResultSetWrapper resultSet) throws SQLException {
+    public static Artikel map(ExtendedResultSet resultSet) throws SQLException {
         Artikel artikel = new Artikel();
         artikel.setId(resultSet.getInt("artikel_id"));
         artikel.setBezeichnung(resultSet.getString("bezeichnung"));

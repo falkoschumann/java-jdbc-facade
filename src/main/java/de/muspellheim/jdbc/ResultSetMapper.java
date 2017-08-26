@@ -10,6 +10,6 @@ import java.sql.*;
 @FunctionalInterface
 public interface ResultSetMapper<T> {
 
-    T map(ResultSetWrapper resultSet) throws SQLException;
+    T map(ExtendedResultSet resultSet) throws SQLException;
 
 }
