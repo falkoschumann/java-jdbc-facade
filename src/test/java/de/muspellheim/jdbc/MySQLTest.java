@@ -3,9 +3,11 @@
  * Released under the terms of the MIT License.
  */
 
-package de.muspellheim;
+package de.muspellheim.jdbc;
 
 import com.mysql.jdbc.jdbc2.optional.*;
+import de.jdbc.*;
+import de.muspellheim.jdbc.*;
 import org.junit.*;
 import org.junit.runners.*;
 
@@ -519,7 +521,7 @@ public class MySQLTest {
 
         assertEquals(5, updateCount);
     }
-/*
+
     @Test
     public void test08SelectKunde() {
         List result = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
@@ -532,5 +534,5 @@ public class MySQLTest {
 
         assertEquals(6, result.size());
     }
-*/
+
 }

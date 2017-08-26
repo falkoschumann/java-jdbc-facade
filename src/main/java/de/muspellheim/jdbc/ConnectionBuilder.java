@@ -3,7 +3,7 @@
  * Released under the terms of the MIT License.
  */
 
-package de.muspellheim;
+package de.muspellheim.jdbc;
 
 import javax.sql.*;
 import java.sql.*;
