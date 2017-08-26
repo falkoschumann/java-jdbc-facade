@@ -6,6 +6,7 @@
 package de.muspellheim.jdbc;
 
 import java.sql.*;
+import java.time.*;
 
 public class PreparedStatementBuilder {
 
@@ -16,8 +17,36 @@ public class PreparedStatementBuilder {
         this.statement = connection.prepareStatement(sql);
     }
 
-    public PreparedStatementBuilder withParam(double param) throws SQLException {
-        statement.setDouble(parameterIndex, param);
+    public PreparedStatementBuilder withParam(int x) throws SQLException {
+        return withParam(s -> s.setInt(parameterIndex, x));
+    }
+
+    public PreparedStatementBuilder withParam(double x) throws SQLException {
+        return withParam(s -> s.setDouble(parameterIndex, x));
+    }
+
+    public PreparedStatementBuilder withParam(String x) throws SQLException {
+        return withParam(s -> s.setString(parameterIndex, x));
+    }
+
+    public PreparedStatementBuilder withParam(Instant x) throws SQLException {
+        return withParam(s -> s.setTimestamp(parameterIndex, Timestamp.from(x)));
+    }
+
+    public PreparedStatementBuilder withParam(LocalDateTime x) throws SQLException {
+        return withParam(s -> s.setTimestamp(parameterIndex, Timestamp.valueOf(x)));
+    }
+
+    public PreparedStatementBuilder withParam(LocalDate x) throws SQLException {
+        return withParam(s -> s.setDate(parameterIndex, Date.valueOf(x)));
+    }
+
+    public PreparedStatementBuilder withParam(LocalTime x) throws SQLException {
+        return withParam(s -> s.setTime(parameterIndex, Time.valueOf(x)));
+    }
+
+    private PreparedStatementBuilder withParam(ParameterSetter setter) throws SQLException {
+        setter.set(statement);
         parameterIndex++;
         return this;
     }
@@ -37,6 +66,13 @@ public class PreparedStatementBuilder {
         JDBCFacade.printWarnings(statement);
 
         return resultSet;
+    }
+
+    @FunctionalInterface
+    private interface ParameterSetter {
+
+        void set(PreparedStatement statement) throws SQLException;
+
     }
 
 }

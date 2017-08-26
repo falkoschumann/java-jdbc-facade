@@ -9,6 +9,8 @@ import com.mysql.jdbc.jdbc2.optional.*;
 import org.junit.*;
 import org.junit.runners.*;
 
+import java.sql.*;
+import java.time.*;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -67,11 +69,11 @@ public class MySQLTest {
                         + "ort VARCHAR(255) NOT NULL DEFAULT '',"
                         + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
                         + "PRIMARY KEY(adresse_id)"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_adresse_dublette ON adresse(strasse(100), hnr(100), plz)"
-        ).execute());
+                "CREATE INDEX idx_adresse_dublette ON adresse(strasse(100), hnr(100), plz)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE kunde ("
@@ -92,11 +94,11 @@ public class MySQLTest {
                         + "REFERENCES adresse(adresse_id)"
                         + "  ON UPDATE CASCADE"
                         + "  ON DELETE SET NULL"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_kunde_nachname_vorname ON kunde(nachname, vorname)"
-        ).execute());
+                "CREATE INDEX idx_kunde_nachname_vorname ON kunde(nachname, vorname)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bank ("
@@ -105,11 +107,11 @@ public class MySQLTest {
                         + "lkz CHAR(2) NOT NULL DEFAULT '',"
                         + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
                         + "PRIMARY KEY(bank_id)"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_bank_bankname ON bank(bankname)"
-        ).execute());
+                "CREATE INDEX idx_bank_bankname ON bank(bankname)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bankverbindung ("
@@ -128,14 +130,14 @@ public class MySQLTest {
                         + "  REFERENCES bank(bank_id)"
                         + "  ON UPDATE RESTRICT"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_bankverbindung_bankid_kontonummer ON bankverbindung(bank_id, kontonummer)"
-        ).execute());
+                "CREATE INDEX idx_bankverbindung_bankid_kontonummer ON bankverbindung(bank_id, kontonummer)")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE UNIQUE INDEX idx_bankverbindung_iban ON bankverbindung(iban)"
-        ).execute());
+                "CREATE UNIQUE INDEX idx_bankverbindung_iban ON bankverbindung(iban)")
+                .execute());
     }
 
     private static void createTablesArtikelverwaltung(JDBCFacade jdbc) {
@@ -147,11 +149,11 @@ public class MySQLTest {
                         + "waehrung CHAR(3) NOT NULL DEFAULT 'EUR',"
                         + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
                         + "PRIMARY KEY(artikel_id)"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_artikel_bezeichnung ON artikel(bezeichnung)"
-        ).execute());
+                "CREATE INDEX idx_artikel_bezeichnung ON artikel(bezeichnung)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE warengruppe ("
@@ -159,11 +161,11 @@ public class MySQLTest {
                         + "bezeichnung VARCHAR(255) NOT NULL DEFAULT '',"
                         + "deleted TINYINT UNSIGNED NOT NULL DEFAULT 0,"
                         + "PRIMARY KEY(warengruppe_id)"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_warengruppe_bezeichnung ON warengruppe(bezeichnung)"
-        ).execute());
+                "CREATE INDEX idx_warengruppe_bezeichnung ON warengruppe(bezeichnung)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel_nm_warengruppe ("
@@ -178,8 +180,8 @@ public class MySQLTest {
                         + "  REFERENCES warengruppe(warengruppe_id)"
                         + "  ON UPDATE CASCADE"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE lieferant ("
@@ -194,11 +196,11 @@ public class MySQLTest {
                         + "REFERENCES adresse(adresse_id)"
                         + "  ON UPDATE CASCADE"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_lieferant_firmenname ON lieferant(firmenname)"
-        ).execute());
+                "CREATE INDEX idx_lieferant_firmenname ON lieferant(firmenname)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel_nm_lieferant ("
@@ -213,8 +215,8 @@ public class MySQLTest {
                         + "  REFERENCES lieferant(lieferant_id)"
                         + "  ON UPDATE CASCADE"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
     }
 
     private static void createTablesBestellwesen(JDBCFacade jdbc) {
@@ -235,11 +237,11 @@ public class MySQLTest {
                         + "  REFERENCES adresse(adresse_id)"
                         + "  ON UPDATE CASCADE"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_bestellung_kundeid_datum ON bestellung(kunde_id, datum)"
-        ).execute());
+                "CREATE INDEX idx_bestellung_kundeid_datum ON bestellung(kunde_id, datum)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bestellung_position ("
@@ -257,8 +259,8 @@ public class MySQLTest {
                         + "  REFERENCES artikel(artikel_id)"
                         + "  ON UPDATE RESTRICT"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE rechnung ("
@@ -280,11 +282,11 @@ public class MySQLTest {
                         + "  REFERENCES adresse(adresse_id)"
                         + "  ON UPDATE RESTRICT"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "CREATE INDEX idx_rechnung_kundeid_datum ON rechnung(kunde_id, datum)"
-        ).execute());
+                "CREATE INDEX idx_rechnung_kundeid_datum ON rechnung(kunde_id, datum)")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE rechnung_position ("
@@ -303,8 +305,8 @@ public class MySQLTest {
                         + "  REFERENCES artikel(artikel_id)"
                         + "  ON UPDATE RESTRICT"
                         + "  ON DELETE RESTRICT"
-                        + ")"
-        ).execute());
+                        + ")")
+                .execute());
     }
 
     @Before
@@ -331,8 +333,8 @@ public class MySQLTest {
                         + "LINES TERMINATED BY '\n' "
                         + "IGNORE 1 LINES "
                         + "(artikel_id, bezeichnung, einzelpreis, waehrung) "
-                        + "SET deleted=0"
-        ).execute());
+                        + "SET deleted=0")
+                .execute());
     }
 
     private void importArtikel02() {
@@ -343,8 +345,8 @@ public class MySQLTest {
                         + "LINES TERMINATED BY '\n' "
                         + "IGNORE 1 LINES "
                         + "(artikel_id, bezeichnung, einzelpreis, waehrung) "
-                        + "SET deleted=0"
-        ).execute());
+                        + "SET deleted=0")
+                .execute());
     }
 
     @Test
@@ -355,8 +357,8 @@ public class MySQLTest {
                         + "('Bürobedarf', 0),"
                         + "('Pflanzen', 0),"
                         + "('Gartenbedarf', 0),"
-                        + "('Werkzeug', 0)"
-        ).execute());
+                        + "('Werkzeug', 0)")
+                .execute());
     }
 
     @Test(expected = UncheckedSQLException.class)
@@ -367,8 +369,8 @@ public class MySQLTest {
                         + "(1, 'Bürobedarf'),"
                         + "(2, 'Pflanzen'),"
                         + "(3, 'Gartenbedarf'),"
-                        + "(4, 'Werkzeug')"
-        ).execute());
+                        + "(4, 'Werkzeug')")
+                .execute());
     }
 
     @Test
@@ -378,80 +380,80 @@ public class MySQLTest {
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=3001,"
-                            + "warengruppe_id=1"
-            ).execute();
+                            + "warengruppe_id=1")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=3005,"
-                            + "warengruppe_id=1"
-            ).execute();
+                            + "warengruppe_id=1")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=3006,"
-                            + "warengruppe_id=1"
-            ).execute();
+                            + "warengruppe_id=1")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=3007,"
-                            + "warengruppe_id=1"
-            ).execute();
+                            + "warengruppe_id=1")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=3010,"
-                            + "warengruppe_id=1"
-            ).execute();
+                            + "warengruppe_id=1")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=7856,"
-                            + "warengruppe_id=2"
-            ).execute();
+                            + "warengruppe_id=2")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=7856,"
-                            + "warengruppe_id=3"
-            ).execute();
+                            + "warengruppe_id=3")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=7863,"
-                            + "warengruppe_id=2"
-            ).execute();
+                            + "warengruppe_id=2")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=7863,"
-                            + "warengruppe_id=3"
-            ).execute();
+                            + "warengruppe_id=3")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=9010,"
-                            + "warengruppe_id=3"
-            ).execute();
+                            + "warengruppe_id=3")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=9010,"
-                            + "warengruppe_id=4"
-            ).execute();
+                            + "warengruppe_id=4")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=9015,"
-                            + "warengruppe_id=3"
-            ).execute();
+                            + "warengruppe_id=3")
+                    .execute();
             connection.statement(
                     "INSERT INTO artikel_nm_warengruppe "
                             + "SET "
                             + "artikel_id=9015,"
-                            + "warengruppe_id=4"
-            ).execute();
+                            + "warengruppe_id=4")
+                    .execute();
         });
     }
 
@@ -460,8 +462,8 @@ public class MySQLTest {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "ALTER TABLE kunde "
                         + "MODIFY "
-                        + "bezahlart ENUM('rechnung', 'bankeinzug', 'nachname') DEFAULT 'rechnung'"
-        ).execute());
+                        + "bezahlart ENUM('rechnung', 'bankeinzug', 'nachname') DEFAULT 'rechnung'")
+                .execute());
     }
 
     @Test
@@ -475,8 +477,8 @@ public class MySQLTest {
                         "(4, 'Letztes Haus',    '4', 'ER', '87567', 'Bruchtal')," +
                         "(5, 'Baradur',         '1', 'MO', '62519', 'Lugburz')," +
                         "(10, 'Hochstrasse',    '4a','DE', '44879', 'Bochum')," +
-                        "(11, 'Industriegebiet','8', 'DE', '44878', 'Bochum')"
-        ).execute());
+                        "(11, 'Industriegebiet','8', 'DE', '44878', 'Bochum')")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "INSERT INTO kunde (kunde_id, rechnung_adresse_id, nachname, vorname, art) " +
@@ -485,16 +487,16 @@ public class MySQLTest {
                         "(2, 2, 'Beutlin',     'Frodo',   'prv')," +
                         "(3, 2, 'Beutlin',     'Bilbo',   'prv')," +
                         "(4, 3, 'Telcontar',   'Elessar', 'prv')," +
-                        "(5, 4, 'Earendilionn','Elrond',  'gsch')"
-        ).execute());
+                        "(5, 4, 'Earendilionn','Elrond',  'gsch')")
+                .execute());
 
         jdbc.executeSQLCommand(connection -> {
             connection.statement(
-                    "UPDATE kunde SET liefer_adresse_id = 2 WHERE kunde_id = 1"
-            ).execute();
+                    "UPDATE kunde SET liefer_adresse_id = 2 WHERE kunde_id = 1")
+                    .execute();
             connection.statement(
-                    "UPDATE kunde SET liefer_adresse_id = 4 WHERE kunde_id = 3;"
-            ).execute();
+                    "UPDATE kunde SET liefer_adresse_id = 4 WHERE kunde_id = 3;")
+                    .execute();
         });
     }
 
@@ -504,8 +506,8 @@ public class MySQLTest {
                 "INSERT INTO bestellung (kunde_id, adresse_id, datum) " +
                         "VALUES " +
                         "(1, 1, '2012-03-24 17:41:00')," +
-                        "(2, 2, '2012-03-23 16:11:00')"
-        ).execute());
+                        "(2, 2, '2012-03-23 16:11:00')")
+                .execute());
 
         int updateCount = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "INSERT INTO bestellung_position (bestellung_id, position_nr, artikel_id, menge) " +
@@ -514,8 +516,8 @@ public class MySQLTest {
                         "(1, 2, 7863, 50)," +
                         "(1, 3, 9015, 1)," +
                         "(2, 1, 7856, 10)," +
-                        "(2, 2, 9010, 5)"
-        ).execute());
+                        "(2, 2, 9010, 5)")
+                .execute());
 
         assertEquals(5, updateCount);
     }
@@ -524,8 +526,7 @@ public class MySQLTest {
     public void test08SelectArtikel() {
         Optional<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "SELECT * FROM artikel "
-                        + "WHERE artikel_id = ?"
-        )
+                        + "WHERE artikel_id = ?")
                 .withParam(3010)
                 .executeQuery()
                 .getSingleResult(ArtikelMapper::map));
@@ -543,14 +544,49 @@ public class MySQLTest {
     public void test09SelectArtikelList() {
         List<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "SELECT * FROM artikel "
-                        + "WHERE einzelpreis BETWEEN ? AND ?"
-        )
+                        + "WHERE einzelpreis BETWEEN ? AND ?")
                 .withParam(1.00)
                 .withParam(15.00)
                 .executeQuery()
                 .getResultList(ArtikelMapper::map));
 
         assertEquals(6, artikel.size());
+    }
+
+    @Test
+    public void test10DateTime() throws SQLException {
+        jdbc.executeSQLCommand(connection -> connection.statement(
+                "CREATE TABLE test_date_time ( " +
+                        "col_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+                        "col_datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+                        "col_date DATE NOT NULL," +
+                        "col_time TIME NOT NULL" +
+                        ")")
+                .execute());
+
+        jdbc.executeSQLQuery(connection -> connection.preparedStatement(
+                "INSERT INTO test_date_time (col_timestamp, col_datetime, col_date, col_time) VALUES  (?, ?, ?, ?)")
+                .withParam(Instant.parse("2017-08-26T14:36:12.00Z"))
+                .withParam(LocalDateTime.parse("2017-08-26T16:36:12"))
+                .withParam(LocalDate.parse("2017-08-26"))
+                .withParam(LocalTime.parse("16:36:12"))
+                .execute());
+
+        Optional<TestDateTime> test = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
+                "SELECT col_timestamp, col_datetime, col_date, col_time FROM test_date_time")
+                .executeQuery()
+                .getSingleResult(rs -> {
+                    TestDateTime t = new TestDateTime();
+                    t.timestamp = rs.getInstant(1);
+                    t.dateTime = rs.getLocalDateTime(2);
+                    t.date = rs.getLocalDate(3);
+                    t.time = rs.getLocalTime(4);
+                    return t;
+                }));
+        assertEquals(Instant.parse("2017-08-26T14:36:12.00Z"), test.get().timestamp);
+        assertEquals(LocalDateTime.parse("2017-08-26T16:36:12"), test.get().dateTime);
+        assertEquals(LocalDate.parse("2017-08-26"), test.get().date);
+        assertEquals(LocalTime.parse("16:36:12"), test.get().time);
     }
 
 }

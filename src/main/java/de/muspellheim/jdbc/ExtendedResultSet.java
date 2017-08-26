@@ -10,6 +10,7 @@ import java.math.*;
 import java.net.*;
 import java.sql.*;
 import java.sql.Date;
+import java.time.*;
 import java.util.*;
 
 public class ExtendedResultSet implements ResultSet {
@@ -34,10 +35,37 @@ public class ExtendedResultSet implements ResultSet {
         return results;
     }
 
-    // TODO LocalDate
-    // TODO LocalTime
-    // TODO LocalDateTime
-    // TODO Timestamp
+    public Instant getInstant(int columnIndex) throws SQLException {
+        return getTimestamp(columnIndex).toInstant();
+    }
+
+    public Instant getInstant(String columnLabel) throws SQLException {
+        return getTimestamp(columnLabel).toInstant();
+    }
+
+    public LocalDateTime getLocalDateTime(int columnIndex) throws SQLException {
+        return getTimestamp(columnIndex).toLocalDateTime();
+    }
+
+    public LocalDateTime getLocalDateTime(String columnLabel) throws SQLException {
+        return getTimestamp(columnLabel).toLocalDateTime();
+    }
+
+    public LocalDate getLocalDate(int columnIndex) throws SQLException {
+        return getDate(columnIndex).toLocalDate();
+    }
+
+    public LocalDate getLocalDate(String columnLabel) throws SQLException {
+        return getDate(columnLabel).toLocalDate();
+    }
+
+    public LocalTime getLocalTime(int columnIndex) throws SQLException {
+        return getTime(columnIndex).toLocalTime();
+    }
+
+    public LocalTime getLocalTime(String columnLabel) throws SQLException {
+        return getTime(columnLabel).toLocalTime();
+    }
 
     @Override
     public boolean next() throws SQLException {
