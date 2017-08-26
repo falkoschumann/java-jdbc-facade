@@ -53,18 +53,15 @@ public class PreparedStatementBuilder {
 
     public int execute() throws SQLException {
         statement.execute();
-
-        // TODO remove debug output
-        JDBCFacade.printWarnings(statement);
-        return statement.getUpdateCount();
+        JDBCFacade.printWarnings(statement); // TODO remove debug output
+        int updateCount = statement.getUpdateCount();
+        statement.close();
+        return updateCount;
     }
 
     public ExtendedResultSet executeQuery() throws SQLException {
         ExtendedResultSet resultSet = new ExtendedResultSet(statement.executeQuery());
-
-        // TODO remove debug output
-        JDBCFacade.printWarnings(statement);
-
+        JDBCFacade.printWarnings(statement); // TODO remove debug output
         return resultSet;
     }
 

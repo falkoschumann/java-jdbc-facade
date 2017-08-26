@@ -19,9 +19,8 @@ public class StatementBuilder {
 
     public void execute() throws SQLException {
         statement.execute(sql);
-
-        // TODO remove debug output
-        JDBCFacade.printWarnings(statement);
+        JDBCFacade.printWarnings(statement); // TODO remove debug output
+        statement.close();
     }
 
 }

@@ -20,9 +20,7 @@ public class JDBCFacade {
         try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
             command.execute(connection);
         } catch (SQLException ex) {
-            // TODO remove debug output
-            printError(ex);
-
+            printError(ex); // TODO remove debug output
             throw new UncheckedSQLException("SQL command failed: " + ex.getLocalizedMessage(), ex);
         }
     }
@@ -31,9 +29,7 @@ public class JDBCFacade {
         try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
             return command.execute(connection);
         } catch (SQLException ex) {
-            // TODO remove debug output
-            printError(ex);
-
+            printError(ex); // TODO remove debug output
             throw new UncheckedSQLException("SQL query failed: " + ex.getLocalizedMessage(), ex);
         }
     }
