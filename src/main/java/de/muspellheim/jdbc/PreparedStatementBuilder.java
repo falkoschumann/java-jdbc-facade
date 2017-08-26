@@ -11,10 +11,15 @@ import java.time.*;
 public class PreparedStatementBuilder {
 
     private final PreparedStatement statement;
-    private int parameterIndex = 1;
+    private int parameterIndex;
 
     PreparedStatementBuilder(Connection connection, String sql) throws SQLException {
         this.statement = connection.prepareStatement(sql);
+        resetParameterIndex();
+    }
+
+    private void resetParameterIndex() {
+        parameterIndex = 1;
     }
 
     public PreparedStatementBuilder withParam(int x) throws SQLException {
@@ -51,17 +56,17 @@ public class PreparedStatementBuilder {
         return this;
     }
 
-    public int execute() throws SQLException {
+    public int executeUpdate() throws SQLException {
         statement.execute();
         JDBCFacade.printWarnings(statement); // TODO remove debug output
-        int updateCount = statement.getUpdateCount();
-        statement.close();
-        return updateCount;
+        resetParameterIndex();
+        return statement.getUpdateCount();
     }
 
     public ExtendedResultSet executeQuery() throws SQLException {
         ExtendedResultSet resultSet = new ExtendedResultSet(statement.executeQuery());
         JDBCFacade.printWarnings(statement); // TODO remove debug output
+        resetParameterIndex();
         return resultSet;
     }
 

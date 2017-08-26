@@ -358,21 +358,21 @@ public class MySQLTest {
                         + "('Pflanzen', 0),"
                         + "('Gartenbedarf', 0),"
                         + "('Werkzeug', 0)")
-                .execute());
+                .executeUpdate());
 
         assertEquals(4, updateCount);
     }
 
     @Test(expected = UncheckedSQLException.class)
     public void test03InsertWarengruppen() {
-        int updateCount = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
+        jdbc.executeSQLCommand(connection -> connection.preparedStatement(
                 "INSERT INTO warengruppe (warengruppe_id, bezeichnung) "
                         + "VALUES "
                         + "(1, 'Bürobedarf'),"
                         + "(2, 'Pflanzen'),"
                         + "(3, 'Gartenbedarf'),"
                         + "(4, 'Werkzeug')")
-                .execute());
+                .executeUpdate());
 
         fail();
     }
@@ -380,67 +380,28 @@ public class MySQLTest {
     @Test
     public void test04InsertArtikelWarengruppen() {
         jdbc.executeSQLCommand(connection -> {
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(3001)
-                    .withParam(1)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(3005)
-                    .withParam(1)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(3006)
-                    .withParam(1)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(3007)
-                    .withParam(1)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(3010)
-                    .withParam(1)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(7856)
-                    .withParam(2)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(7856)
-                    .withParam(3)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(7863)
-                    .withParam(2)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(7863)
-                    .withParam(3)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(9010)
-                    .withParam(3)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(9010)
-                    .withParam(4)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(9015)
-                    .withParam(3)
-                    .execute();
-            connection.preparedStatement("INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?")
-                    .withParam(9015)
-                    .withParam(4)
-                    .execute();
+            PreparedStatementBuilder statement = connection.preparedStatement(
+                    "INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?");
+            statement.withParam(3001).withParam(1).executeUpdate();
+            statement.withParam(3005).withParam(1).executeUpdate();
+            statement.withParam(3006).withParam(1).executeUpdate();
+            statement.withParam(3007).withParam(1).executeUpdate();
+            statement.withParam(3010).withParam(1).executeUpdate();
+            statement.withParam(7856).withParam(2).executeUpdate();
+            statement.withParam(7856).withParam(3).executeUpdate();
+            statement.withParam(7863).withParam(2).executeUpdate();
+            statement.withParam(7863).withParam(3).executeUpdate();
+            statement.withParam(9010).withParam(3).executeUpdate();
+            statement.withParam(9010).withParam(4).executeUpdate();
+            statement.withParam(9015).withParam(3).executeUpdate();
+            statement.withParam(9015).withParam(4).executeUpdate();
         });
     }
 
     @Test
     public void test05AlterTableKundeAlterColumnBezahlart() {
         jdbc.executeSQLCommand(connection -> connection.statement(
-                "ALTER TABLE kunde "
-                        + "MODIFY "
-                        + "bezahlart ENUM('rechnung', 'bankeinzug', 'nachname') DEFAULT 'rechnung'")
+                "ALTER TABLE kunde MODIFY bezahlart ENUM('rechnung', 'bankeinzug', 'nachname') DEFAULT 'rechnung'")
                 .execute());
     }
 
@@ -469,42 +430,37 @@ public class MySQLTest {
                 .execute());
 
         jdbc.executeSQLCommand(connection -> {
-            connection.statement(
-                    "UPDATE kunde SET liefer_adresse_id = 2 WHERE kunde_id = 1")
-                    .execute();
-            connection.statement(
-                    "UPDATE kunde SET liefer_adresse_id = 4 WHERE kunde_id = 3;")
-                    .execute();
+            PreparedStatementBuilder statement = connection.preparedStatement(
+                    "UPDATE kunde SET liefer_adresse_id = ? WHERE kunde_id = ?");
+            statement.withParam(2).withParam(1).executeUpdate();
+            statement.withParam(4).withParam(3).executeUpdate();
         });
     }
 
     @Test
     public void test07InsertBestellungen() {
-        jdbc.executeSQLCommand(connection -> connection.statement(
-                "INSERT INTO bestellung (kunde_id, adresse_id, datum) " +
-                        "VALUES " +
-                        "(1, 1, '2012-03-24 17:41:00')," +
-                        "(2, 2, '2012-03-23 16:11:00')")
-                .execute());
+        jdbc.executeSQLCommand(connection -> {
+            PreparedStatementBuilder statement = connection.preparedStatement(
+                    "INSERT INTO bestellung (kunde_id, adresse_id, datum) VALUES (?, ?, ?)");
+            statement.withParam(1).withParam(1).withParam(LocalDateTime.parse("2012-03-24T17:41:00")).executeUpdate();
+            statement.withParam(2).withParam(2).withParam(LocalDateTime.parse("2012-03-23T16:11:00")).executeUpdate();
+        });
 
-        int updateCount = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
-                "INSERT INTO bestellung_position (bestellung_id, position_nr, artikel_id, menge) " +
-                        "VALUES " +
-                        "(1, 1, 7856, 30)," +
-                        "(1, 2, 7863, 50)," +
-                        "(1, 3, 9015, 1)," +
-                        "(2, 1, 7856, 10)," +
-                        "(2, 2, 9010, 5)")
-                .execute());
-
-        assertEquals(5, updateCount);
+        jdbc.executeSQLCommand(connection -> {
+            PreparedStatementBuilder statement = connection.preparedStatement(
+                    "INSERT INTO bestellung_position (bestellung_id, position_nr, artikel_id, menge) VALUES (?, ?, ?, ?)");
+            statement.withParam(1).withParam(1).withParam(7856).withParam(30).executeUpdate();
+            statement.withParam(1).withParam(2).withParam(7863).withParam(50).executeUpdate();
+            statement.withParam(1).withParam(3).withParam(9015).withParam(1).executeUpdate();
+            statement.withParam(2).withParam(1).withParam(7856).withParam(10).executeUpdate();
+            statement.withParam(2).withParam(2).withParam(9010).withParam(5).executeUpdate();
+        });
     }
 
     @Test
     public void test08SelectArtikel() {
         Optional<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
-                "SELECT * FROM artikel "
-                        + "WHERE artikel_id = ?")
+                "SELECT * FROM artikel WHERE artikel_id = ?")
                 .withParam(3010)
                 .executeQuery()
                 .getSingleResult(ArtikelMapper::map));
@@ -521,8 +477,7 @@ public class MySQLTest {
     @Test
     public void test09SelectArtikelList() {
         List<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
-                "SELECT * FROM artikel "
-                        + "WHERE einzelpreis BETWEEN ? AND ?")
+                "SELECT * FROM artikel WHERE einzelpreis BETWEEN ? AND ?")
                 .withParam(1.00)
                 .withParam(15.00)
                 .executeQuery()
@@ -548,7 +503,7 @@ public class MySQLTest {
                 .withParam(LocalDateTime.parse("2017-08-26T16:36:12"))
                 .withParam(LocalDate.parse("2017-08-26"))
                 .withParam(LocalTime.parse("16:36:12"))
-                .execute());
+                .executeUpdate());
 
         Optional<TestDateTime> test = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "SELECT col_timestamp, col_datetime, col_date, col_time FROM test_date_time")
