@@ -34,7 +34,7 @@ public class JDBCFacade {
             // TODO remove debug output
             printError(ex);
 
-            throw new UncheckedSQLException("SQL command failed: " + ex.getLocalizedMessage(), ex);
+            throw new UncheckedSQLException("SQL query failed: " + ex.getLocalizedMessage(), ex);
         }
     }
 

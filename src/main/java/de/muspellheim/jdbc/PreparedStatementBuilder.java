@@ -45,8 +45,8 @@ public class PreparedStatementBuilder {
         return withParam(s -> s.setTime(parameterIndex, Time.valueOf(x)));
     }
 
-    private PreparedStatementBuilder withParam(ParameterSetter setter) throws SQLException {
-        setter.set(statement);
+    private PreparedStatementBuilder withParam(SQLProcedure<PreparedStatement> setter) throws SQLException {
+        setter.call(statement);
         parameterIndex++;
         return this;
     }
@@ -66,13 +66,6 @@ public class PreparedStatementBuilder {
         JDBCFacade.printWarnings(statement);
 
         return resultSet;
-    }
-
-    @FunctionalInterface
-    private interface ParameterSetter {
-
-        void set(PreparedStatement statement) throws SQLException;
-
     }
 
 }

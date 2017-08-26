@@ -8,8 +8,8 @@ package de.muspellheim.jdbc;
 import java.sql.*;
 
 @FunctionalInterface
-public interface ResultSetMapper<T> {
+public interface SQLProcedure<T> {
 
-    T map(ExtendedResultSet resultSet) throws SQLException;
+    void call(T t) throws SQLException;
 
 }

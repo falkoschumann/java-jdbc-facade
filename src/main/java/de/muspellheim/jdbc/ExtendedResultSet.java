@@ -21,16 +21,16 @@ public class ExtendedResultSet implements ResultSet {
         this.resultSet = resultSet;
     }
 
-    public <T> Optional<T> getSingleResult(ResultSetMapper<T> mapper) throws SQLException {
+    public <T> Optional<T> getSingleResult(SQLFunction<ExtendedResultSet, T> mapper) throws SQLException {
         if (resultSet.next())
-            return Optional.of(mapper.map(this));
+            return Optional.of(mapper.call(this));
         return Optional.empty();
     }
 
-    public <T> List<T> getResultList(ResultSetMapper<T> mapper) throws SQLException {
+    public <T> List<T> getResultList(SQLFunction<ExtendedResultSet, T> mapper) throws SQLException {
         List<T> results = new ArrayList<>();
         while (resultSet.next()) {
-            results.add(mapper.map(this));
+            results.add(mapper.call(this));
         }
         return results;
     }
