@@ -30,11 +30,13 @@ public class PreparedStatementBuilder {
         return statement.getUpdateCount();
     }
 
-    public void executeQuery() throws SQLException {
-        statement.executeQuery();
+    public ResultSetWrapper executeQuery() throws SQLException {
+        ResultSetWrapper resultSet = new ResultSetWrapper(statement.executeQuery());
 
         // TODO remove debug output
         JDBCFacade.printWarnings(statement);
+
+        return resultSet;
     }
 
 }

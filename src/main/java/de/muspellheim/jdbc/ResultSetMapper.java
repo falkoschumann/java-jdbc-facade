@@ -8,8 +8,8 @@ package de.muspellheim.jdbc;
 import java.sql.*;
 
 @FunctionalInterface
-public interface SQLQuery<T> {
+public interface ResultSetMapper<T> {
 
-    T execute(ConnectionBuilder connection) throws SQLException;
+    T map(ResultSetWrapper resultSet) throws SQLException;
 
 }

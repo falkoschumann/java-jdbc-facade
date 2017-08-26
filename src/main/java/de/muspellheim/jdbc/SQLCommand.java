@@ -7,6 +7,7 @@ package de.muspellheim.jdbc;
 
 import java.sql.*;
 
+@FunctionalInterface
 public interface SQLCommand {
 
     void execute(ConnectionBuilder connection) throws SQLException;

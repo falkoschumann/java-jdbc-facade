@@ -6,8 +6,6 @@
 package de.muspellheim.jdbc;
 
 import com.mysql.jdbc.jdbc2.optional.*;
-import de.jdbc.*;
-import de.muspellheim.jdbc.*;
 import org.junit.*;
 import org.junit.runners.*;
 
@@ -523,16 +521,36 @@ public class MySQLTest {
     }
 
     @Test
-    public void test08SelectKunde() {
-        List result = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
+    public void test08SelectArtikel() {
+        Optional<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
+                "SELECT * FROM artikel "
+                        + "WHERE artikel_id = ?"
+        )
+                .withParam(3010)
+                .executeQuery()
+                .getSingleResult(ArtikelMapper::map));
+
+        assertTrue(artikel.isPresent());
+        Artikel expected = new Artikel();
+        expected.setId(3010);
+        expected.setBezeichnung("Feder");
+        expected.setEinzelpreis(Money.of(5.00, "EUR"));
+        expected.setDeleted(false);
+        assertEquals(expected, artikel.get());
+    }
+
+    @Test
+    public void test09SelectArtikelList() {
+        List<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "SELECT * FROM artikel "
                         + "WHERE einzelpreis BETWEEN ? AND ?"
         )
                 .withParam(1.00)
                 .withParam(15.00)
-                .executeQuery());
+                .executeQuery()
+                .getResultList(ArtikelMapper::map));
 
-        assertEquals(6, result.size());
+        assertEquals(6, artikel.size());
     }
 
 }
