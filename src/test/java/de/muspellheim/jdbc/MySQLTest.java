@@ -44,18 +44,16 @@ public class MySQLTest {
     }
 
     private static int getPort() {
-        String port = System.getenv("MYSQL_PORT");
-        return port != null ? Integer.parseInt(port) : 3306;
+        String port = System.getProperty("mysqlPort", "3306");
+        return Integer.parseInt(port);
     }
 
     private static String getUser() {
-        String user = System.getenv("MYSQL_USER");
-        return user != null ? user : "root";
+        return System.getProperty("mysqlUser", "root");
     }
 
     private static String getPassword() {
-        String password = System.getenv("MYSQL_PASSWORD");
-        return password != null ? password : "";
+        return System.getProperty("mysqlPassword", "");
     }
 
     private static void createTablesKundenverwaltung(JDBCFacade jdbc) {
