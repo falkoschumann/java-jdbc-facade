@@ -7,6 +7,9 @@ package de.muspellheim.jdbc;
 
 import java.sql.*;
 
+/**
+ * Define a SQL command.
+ */
 @FunctionalInterface
 public interface SQLCommand {
 
