@@ -13,20 +13,44 @@ import java.sql.Date;
 import java.time.*;
 import java.util.*;
 
+/**
+ * Wraps a result set and extends it with object mapping and getter for Java 8 Time API.
+ */
 public class ExtendedResultSet implements ResultSet {
 
     private ResultSet resultSet;
 
+    /**
+     * Initialize the result set.
+     *
+     * @param resultSet the result set to extend.
+     */
     public ExtendedResultSet(ResultSet resultSet) {
         this.resultSet = resultSet;
     }
 
+    /**
+     * Get a single result by mapping the first result to an object.
+     *
+     * @param mapper the mapping function.
+     * @param <T>    the result object type.
+     * @return an optional with the mapped object.
+     * @throws SQLException
+     */
     public <T> Optional<T> getSingleResult(SQLFunction<ExtendedResultSet, T> mapper) throws SQLException {
         if (resultSet.next())
             return Optional.of(mapper.call(this));
         return Optional.empty();
     }
 
+    /**
+     * Get a result list by mapping any result to an object.
+     *
+     * @param mapper the mapping function.
+     * @param <T>    the result object type.
+     * @return a list with the mapped objects.
+     * @throws SQLException
+     */
     public <T> List<T> getResultList(SQLFunction<ExtendedResultSet, T> mapper) throws SQLException {
         List<T> results = new ArrayList<>();
         while (resultSet.next()) {

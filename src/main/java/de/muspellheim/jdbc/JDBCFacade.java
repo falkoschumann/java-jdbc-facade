@@ -8,57 +8,45 @@ package de.muspellheim.jdbc;
 import javax.sql.*;
 import java.sql.*;
 
+/**
+ * Facade for JDBC with fluent API.
+ */
 public class JDBCFacade {
 
     private DataSource dataSource;
 
+    /**
+     * The facade use one data source.
+     *
+     * @param dataSource the data source using by the facade.
+     */
     public JDBCFacade(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void executeSQLCommand(SQLCommand command) {
+    /**
+     * Run a SQL command, usually a DDL (Data Definition Language) command like <code>CREATE</code>,
+     * <code>ALTER</code> or <code>DROP</code>.
+     *
+     * @param command the SQL command.
+     * @throws SQLException
+     */
+    public void executeSQLCommand(SQLCommand command) throws SQLException {
         try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
             command.execute(connection);
-        } catch (SQLException ex) {
-            printError(ex); // TODO remove debug output
-            throw new UncheckedSQLException("SQL command failed: " + ex.getLocalizedMessage(), ex);
         }
     }
 
-    public <T> T executeSQLQuery(SQLQuery<T> command) {
+    /**
+     * Run a SQL query, usually a DML (Data Manipulation Language) command like <code>SELECT</code>,
+     * <code>INSERT</code>, <code>UPDATE</code> or <code>DELETE</code>.
+     *
+     * @param command the SQL command.
+     * @throws SQLException
+     */
+    public <T> T executeSQLQuery(SQLQuery<T> command) throws SQLException {
         try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
             return command.execute(connection);
-        } catch (SQLException ex) {
-            printError(ex); // TODO remove debug output
-            throw new UncheckedSQLException("SQL query failed: " + ex.getLocalizedMessage(), ex);
-        }
-    }
-
-    static void printError(SQLException ex) {
-        for (Throwable t : ex) {
-            String msg = "";
-            if (t instanceof SQLException) {
-                SQLException e = (SQLException) t;
-                msg += "SQL state: " + e.getSQLState() + ", error code: " + e.getErrorCode() + " - ";
-            }
-
-            msg += t;
-            System.err.println("ERROR: " + msg);
-        }
-    }
-
-    static void printWarnings(Statement statement) throws SQLException {
-        if (statement.getWarnings() != null) {
-            for (Throwable t : statement.getWarnings()) {
-                String msg = "";
-                if (t instanceof SQLException) {
-                    SQLException ex = (SQLException) t;
-                    msg += "SQL state: " + ex.getSQLState() + ", error code: " + ex.getErrorCode() + " - ";
-                }
-
-                msg += t;
-                System.err.println("WARNING: " + msg);
-            }
         }
     }
 

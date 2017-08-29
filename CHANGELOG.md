@@ -5,6 +5,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+*   Documentation.
+
+### Changed
+
+*   Refine the API.
+*   No use of unchecked exceptions. The `SQLException` must be handled, wrap by
+    an unchecked exception is futile.
+*   JavaFX table view is not extended, it is configured.
+
 ## 1.0.0 - 2017-08-27
 
 ### Added
@@ -17,4 +28,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 *   Extends JavaFX table view using JDBC result set as data source.
  
 
-[Unreleased]: https://github.com/falkoschumann/java-jdbc-facade/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/falkoschumann/java-jdbc-facade/compare/v1.0.0...v2.0.0

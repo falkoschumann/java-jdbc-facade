@@ -21,7 +21,7 @@ public class MySQLTest {
     private JDBCFacade jdbc;
 
     @BeforeClass
-    public static void createSchema() {
+    public static void createSchema() throws SQLException {
         MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
         dataSource.setPort(getPort());
         dataSource.setUser(getUser());
@@ -56,7 +56,7 @@ public class MySQLTest {
         return System.getProperty("mysqlPassword", "");
     }
 
-    private static void createTablesKundenverwaltung(JDBCFacade jdbc) {
+    private static void createTablesKundenverwaltung(JDBCFacade jdbc) throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE adresse ("
                         + "adresse_id INT UNSIGNED AUTO_INCREMENT,"
@@ -138,7 +138,7 @@ public class MySQLTest {
                 .execute());
     }
 
-    private static void createTablesArtikelverwaltung(JDBCFacade jdbc) {
+    private static void createTablesArtikelverwaltung(JDBCFacade jdbc) throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE artikel ("
                         + "artikel_id INT UNSIGNED AUTO_INCREMENT,"
@@ -217,7 +217,7 @@ public class MySQLTest {
                 .execute());
     }
 
-    private static void createTablesBestellwesen(JDBCFacade jdbc) {
+    private static void createTablesBestellwesen(JDBCFacade jdbc) throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "CREATE TABLE bestellung ("
                         + "bestellung_id INT UNSIGNED AUTO_INCREMENT,"
@@ -318,12 +318,12 @@ public class MySQLTest {
     }
 
     @Test
-    public void test01ImportArtikel() {
+    public void test01ImportArtikel() throws SQLException {
         importArtikel01();
         importArtikel02();
     }
 
-    private void importArtikel01() {
+    private void importArtikel01() throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "LOAD DATA LOCAL INFILE 'src/example/data/artikel01.csv' "
                         + "INTO TABLE artikel "
@@ -335,7 +335,7 @@ public class MySQLTest {
                 .execute());
     }
 
-    private void importArtikel02() {
+    private void importArtikel02() throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "LOAD DATA LOCAL INFILE 'src/example/data/artikel02.csv' REPLACE "
                         + "INTO TABLE artikel "
@@ -348,7 +348,7 @@ public class MySQLTest {
     }
 
     @Test
-    public void test02InsertWarengruppen() {
+    public void test02InsertWarengruppen() throws SQLException {
         int updateCount = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "INSERT INTO warengruppe (bezeichnung, deleted) "
                         + "VALUES "
@@ -361,8 +361,8 @@ public class MySQLTest {
         assertEquals(4, updateCount);
     }
 
-    @Test(expected = UncheckedSQLException.class)
-    public void test03InsertWarengruppen() {
+    @Test(expected = SQLException.class)
+    public void test03InsertWarengruppen() throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.preparedStatement(
                 "INSERT INTO warengruppe (warengruppe_id, bezeichnung) "
                         + "VALUES "
@@ -376,7 +376,7 @@ public class MySQLTest {
     }
 
     @Test
-    public void test04InsertArtikelWarengruppen() {
+    public void test04InsertArtikelWarengruppen() throws SQLException {
         jdbc.executeSQLCommand(connection -> {
             PreparedStatementBuilder statement = connection.preparedStatement(
                     "INSERT INTO artikel_nm_warengruppe SET artikel_id=?, warengruppe_id=?");
@@ -397,14 +397,14 @@ public class MySQLTest {
     }
 
     @Test
-    public void test05AlterTableKundeAlterColumnBezahlart() {
+    public void test05AlterTableKundeAlterColumnBezahlart() throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "ALTER TABLE kunde MODIFY bezahlart ENUM('rechnung', 'bankeinzug', 'nachname') DEFAULT 'rechnung'")
                 .execute());
     }
 
     @Test
-    public void test06InsertKunden() {
+    public void test06InsertKunden() throws SQLException {
         jdbc.executeSQLCommand(connection -> connection.statement(
                 "INSERT INTO adresse (adresse_id, strasse, hnr, lkz, plz, ort) " +
                         "VALUES " +
@@ -436,7 +436,7 @@ public class MySQLTest {
     }
 
     @Test
-    public void test07InsertBestellungen() {
+    public void test07InsertBestellungen() throws SQLException {
         jdbc.executeSQLCommand(connection -> {
             PreparedStatementBuilder statement = connection.preparedStatement(
                     "INSERT INTO bestellung (kunde_id, adresse_id, datum) VALUES (?, ?, ?)");
@@ -456,7 +456,7 @@ public class MySQLTest {
     }
 
     @Test
-    public void test08SelectArtikel() {
+    public void test08SelectArtikel() throws SQLException {
         Optional<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "SELECT * FROM artikel WHERE artikel_id = ?")
                 .withParam(3010)
@@ -473,7 +473,7 @@ public class MySQLTest {
     }
 
     @Test
-    public void test09SelectArtikelList() {
+    public void test09SelectArtikelList() throws SQLException {
         List<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
                 "SELECT * FROM artikel WHERE einzelpreis BETWEEN ? AND ?")
                 .withParam(1.00)
