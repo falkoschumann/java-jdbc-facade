@@ -29,7 +29,7 @@ public class JDBCFacade {
      * <code>ALTER</code> or <code>DROP</code>.
      *
      * @param command the SQL command.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public void executeSQLCommand(SQLCommand command) throws SQLException {
         try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {
@@ -42,7 +42,9 @@ public class JDBCFacade {
      * <code>INSERT</code>, <code>UPDATE</code> or <code>DELETE</code>.
      *
      * @param command the SQL command.
-     * @throws SQLException
+     * @param <T>     the return type of the query, usually an single data structure or list of data structures.
+     * @return the query result.
+     * @throws SQLException if a database access error occurs.
      */
     public <T> T executeSQLQuery(SQLQuery<T> command) throws SQLException {
         try (ConnectionBuilder connection = new ConnectionBuilder(dataSource)) {

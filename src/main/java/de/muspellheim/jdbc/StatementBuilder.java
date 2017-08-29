@@ -22,7 +22,7 @@ public class StatementBuilder {
      *
      * @param connection the connection used to create a statement.
      * @param sql        the SQL command for the statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public StatementBuilder(Connection connection, String sql) throws SQLException {
         this.statement = connection.createStatement();
@@ -32,7 +32,7 @@ public class StatementBuilder {
     /**
      * Execute the statement and close it after execution.
      *
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public void execute() throws SQLException {
         statement.execute(sql);

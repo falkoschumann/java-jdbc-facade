@@ -19,7 +19,7 @@ public class ConnectionBuilder implements AutoCloseable {
      * Initialize the builder.
      *
      * @param dataSource the builder use this data source to create the underlying connection.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public ConnectionBuilder(DataSource dataSource) throws SQLException {
         this.connection = dataSource.getConnection();
@@ -31,7 +31,7 @@ public class ConnectionBuilder implements AutoCloseable {
      *
      * @param sql a DDL command.
      * @return a builder for a statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public StatementBuilder statement(String sql) throws SQLException {
         return new StatementBuilder(connection, sql);
@@ -43,7 +43,7 @@ public class ConnectionBuilder implements AutoCloseable {
      *
      * @param sql a DML command.
      * @return a builder for a prepared statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder preparedStatement(String sql) throws SQLException {
         return new PreparedStatementBuilder(connection, sql);
@@ -52,7 +52,7 @@ public class ConnectionBuilder implements AutoCloseable {
     /**
      * Close the underlying connection.
      *
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     @Override
     public void close() throws SQLException {

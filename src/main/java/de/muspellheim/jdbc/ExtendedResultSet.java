@@ -35,7 +35,7 @@ public class ExtendedResultSet implements ResultSet {
      * @param mapper the mapping function.
      * @param <T>    the result object type.
      * @return an optional with the mapped object.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public <T> Optional<T> getSingleResult(SQLFunction<ExtendedResultSet, T> mapper) throws SQLException {
         if (resultSet.next())
@@ -49,7 +49,7 @@ public class ExtendedResultSet implements ResultSet {
      * @param mapper the mapping function.
      * @param <T>    the result object type.
      * @return a list with the mapped objects.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public <T> List<T> getResultList(SQLFunction<ExtendedResultSet, T> mapper) throws SQLException {
         List<T> results = new ArrayList<>();

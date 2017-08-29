@@ -26,7 +26,7 @@ public class PreparedStatementBuilder {
      *
      * @param connection the connection used to create a statement.
      * @param sql        the SQL command for the statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder(Connection connection, String sql) throws SQLException {
         this.statement = connection.prepareStatement(sql);
@@ -42,7 +42,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(byte x) throws SQLException {
         return withParam(s -> s.setByte(parameterIndex, x));
@@ -53,7 +53,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(short x) throws SQLException {
         return withParam(s -> s.setShort(parameterIndex, x));
@@ -64,7 +64,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(int x) throws SQLException {
         return withParam(s -> s.setInt(parameterIndex, x));
@@ -75,7 +75,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(long x) throws SQLException {
         return withParam(s -> s.setLong(parameterIndex, x));
@@ -86,7 +86,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(float x) throws SQLException {
         return withParam(s -> s.setFloat(parameterIndex, x));
@@ -97,7 +97,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(double x) throws SQLException {
         return withParam(s -> s.setDouble(parameterIndex, x));
@@ -108,7 +108,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(boolean x) throws SQLException {
         return withParam(s -> s.setBoolean(parameterIndex, x));
@@ -119,7 +119,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(String x) throws SQLException {
         return withParam(s -> s.setString(parameterIndex, x));
@@ -130,7 +130,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(InputStream x) throws SQLException {
         return withParam(s -> s.setBlob(parameterIndex, x));
@@ -141,7 +141,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(Reader x) throws SQLException {
         return withParam(s -> s.setClob(parameterIndex, x));
@@ -152,7 +152,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(Instant x) throws SQLException {
         return withParam(s -> s.setTimestamp(parameterIndex, Timestamp.from(x)));
@@ -163,7 +163,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(LocalDateTime x) throws SQLException {
         return withParam(s -> s.setTimestamp(parameterIndex, Timestamp.valueOf(x)));
@@ -174,7 +174,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(LocalDate x) throws SQLException {
         return withParam(s -> s.setDate(parameterIndex, Date.valueOf(x)));
@@ -185,7 +185,7 @@ public class PreparedStatementBuilder {
      *
      * @param x the value
      * @return this statement.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public PreparedStatementBuilder withParam(LocalTime x) throws SQLException {
         return withParam(s -> s.setTime(parameterIndex, Time.valueOf(x)));
@@ -201,7 +201,7 @@ public class PreparedStatementBuilder {
      * Execute an update, usually an <code>INSERT</code>, <code>UPDATE</code> or <code>DELETE</code> command.
      *
      * @return the number of updated rows.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public int executeUpdate() throws SQLException {
         statement.execute();
@@ -213,7 +213,7 @@ public class PreparedStatementBuilder {
      * Execute a query, every <code>SELECT</code> command.
      *
      * @return the queries result set.
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs.
      */
     public ExtendedResultSet executeQuery() throws SQLException {
         ExtendedResultSet resultSet = new ExtendedResultSet(statement.executeQuery());

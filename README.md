@@ -108,6 +108,10 @@ or with parameters
         statement.withParam(9015).withParam(4).executeUpdate();
     });
 
+A SQL statement with parameters can initialize one and execute multiple. After
+execution you can set the parameter with new values and execute the same
+statement. 
+
 Of course you can select some data. E.g. a single result find by primary key 
 
     Optional<Artikel> artikel = jdbc.executeSQLQuery(connection -> connection.preparedStatement(
