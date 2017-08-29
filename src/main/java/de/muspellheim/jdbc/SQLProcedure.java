@@ -7,6 +7,11 @@ package de.muspellheim.jdbc;
 
 import java.sql.*;
 
+/**
+ * Define a procedure or function without a return value, it can throw SQL exception.
+ *
+ * @param <T> the parameter type.
+ */
 @FunctionalInterface
 public interface SQLProcedure<T> {
 

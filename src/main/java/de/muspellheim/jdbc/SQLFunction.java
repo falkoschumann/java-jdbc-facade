@@ -7,6 +7,12 @@ package de.muspellheim.jdbc;
 
 import java.sql.*;
 
+/**
+ * Define a function, it can throw SQL exception.
+ *
+ * @param <T> the parameter type.
+ * @param <R> the return type.
+ */
 @FunctionalInterface
 public interface SQLFunction<T, R> {
 
