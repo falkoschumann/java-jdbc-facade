@@ -5,6 +5,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.0] - 2017-09-01
+
 ### Changed
 
 *   JDBC drivers are test compile, not compile dependencies.
@@ -36,5 +38,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 *   Extends JavaFX table view using JDBC result set as data source.
  
 
-[Unreleased]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.1.0...HEAD
+[2.0.0]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/falkoschumann/java-jdbc-facade/compare/v1.0.0...v2.0.0

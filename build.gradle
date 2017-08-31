@@ -13,7 +13,7 @@ apply plugin: 'maven'
 apply plugin: 'biz.aQute.bnd.builder'
 
 group 'de.muspellheim'
-version '2.0.0'
+version '2.1.0'
 
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
