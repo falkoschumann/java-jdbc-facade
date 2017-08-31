@@ -8,6 +8,7 @@ package de.muspellheim.jdbc;
 import java.io.*;
 import java.sql.*;
 import java.time.*;
+import java.util.logging.*;
 
 /**
  * Build and execute a prepared statement.
@@ -18,6 +19,7 @@ import java.time.*;
  */
 public class PreparedStatementBuilder {
 
+    private final Logger log = Logger.getLogger(getClass().getName());
     private final PreparedStatement statement;
     private int parameterIndex;
 
@@ -204,6 +206,7 @@ public class PreparedStatementBuilder {
      * @throws SQLException if a database access error occurs.
      */
     public int executeUpdate() throws SQLException {
+        log.fine("Execute update: " + statement);
         statement.execute();
         resetParameterIndex();
         return statement.getUpdateCount();
@@ -216,6 +219,7 @@ public class PreparedStatementBuilder {
      * @throws SQLException if a database access error occurs.
      */
     public ExtendedResultSet executeQuery() throws SQLException {
+        log.fine("Execute query: " + statement);
         ExtendedResultSet resultSet = new ExtendedResultSet(statement.executeQuery());
         resetParameterIndex();
         return resultSet;

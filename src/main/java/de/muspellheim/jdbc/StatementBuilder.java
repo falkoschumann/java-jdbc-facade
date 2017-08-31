@@ -6,6 +6,7 @@
 package de.muspellheim.jdbc;
 
 import java.sql.*;
+import java.util.logging.*;
 
 /**
  * Build and execute a statement.
@@ -14,6 +15,7 @@ import java.sql.*;
  */
 public class StatementBuilder {
 
+    private final Logger log = Logger.getLogger(getClass().getName());
     private final Statement statement;
     private final String sql;
 
@@ -35,6 +37,7 @@ public class StatementBuilder {
      * @throws SQLException if a database access error occurs.
      */
     public void execute() throws SQLException {
+        log.fine("Execute command: " + sql);
         statement.execute(sql);
         statement.close();
     }
