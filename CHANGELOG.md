@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 *   JDBC drivers are test compile, not compile dependencies.
 *   Logging SQL statements in log level _fine_.
+*   Derive `JDBCTableViewBuilder` to configure table columns.
 
 ## [2.0.0] - 2017-08-29
 
