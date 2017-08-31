@@ -17,14 +17,14 @@ import java.sql.*;
  */
 public class JDBCTableViewBuilder {
 
-    private final TableView tableView;
+    private final TableView<ObservableList<String>> tableView;
 
     /**
      * Initialize the builder.
      *
      * @param tableView the table view to fill.
      */
-    public JDBCTableViewBuilder(TableView tableView) {
+    public JDBCTableViewBuilder(TableView<ObservableList<String>> tableView) {
         this.tableView = tableView;
     }
 
@@ -51,11 +51,21 @@ public class JDBCTableViewBuilder {
 
     private void addColumns(ResultSet resultSet) throws SQLException {
         for (int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
-            final int j = i;
-            TableColumn<ObservableList<String>, String> col = new TableColumn<>(resultSet.getMetaData().getColumnLabel(i + 1));
-            col.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(j)));
-            tableView.getColumns().addAll(col);
+            TableColumn<ObservableList<String>, String> column = new TableColumn<>(resultSet.getMetaData().getColumnLabel(i + 1));
+            configureTableColumn(column, i);
+            tableView.getColumns().addAll(column);
         }
+    }
+
+    /**
+     * Overwrite to configure column with given index.
+     * <p>The default implementation sets a simple string property as cell value factory.</p>
+     *
+     * @param column      the column to configure.
+     * @param columnIndex the column index.
+     */
+    protected void configureTableColumn(TableColumn<ObservableList<String>, String> column, int columnIndex) {
+        column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(columnIndex)));
     }
 
     private void addRows(ResultSet resultSet) throws SQLException {
