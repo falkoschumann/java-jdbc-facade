@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+*   JDBC drivers are test compile, not compile dependencies.
+
 ## [2.0.0] - 2017-08-29
 
 ### Added
