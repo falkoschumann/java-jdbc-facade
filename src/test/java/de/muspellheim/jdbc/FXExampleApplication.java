@@ -7,6 +7,7 @@ package de.muspellheim.jdbc;
 
 import com.mysql.jdbc.jdbc2.optional.*;
 import javafx.application.*;
+import javafx.collections.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
@@ -23,7 +24,7 @@ public class FXExampleApplication extends Application {
         dataSource.setPassword("root");
         dataSource.setDatabaseName("oshop");
 
-        TableView tableView = new TableView();
+        TableView<ObservableList<String>> tableView = new TableView<>();
         try (Connection connection = dataSource.getConnection()) {
             String sql = "SELECT " +
                     "    artikel_id AS 'Artikel-ID'," +

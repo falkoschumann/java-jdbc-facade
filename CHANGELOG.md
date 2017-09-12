@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.0] - 2017-09-12
+
+### Added
+
+*   Query loader can load SQL queries from files in classpath.
+*   The new query loader supports client side dynamic SQL.
+
 ## [2.1.0] - 2017-09-01
 
 ### Changed
