@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.0] - 2017-09-13
+
+### Added
+
+*   `DataAccessException` to encapsulate `SQLException` in domain logic and UI
+    code.
+
 ## [2.2.0] - 2017-09-12
 
 ### Added
@@ -45,6 +52,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 *   Extends JavaFX table view using JDBC result set as data source.
  
 
-[Unreleased]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/falkoschumann/java-jdbc-facade/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/falkoschumann/java-jdbc-facade/compare/v1.0.0...v2.0.0

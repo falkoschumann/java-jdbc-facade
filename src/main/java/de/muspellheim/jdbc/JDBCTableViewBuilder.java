@@ -32,13 +32,17 @@ public class JDBCTableViewBuilder {
      * Replace the table columns and rows with result set content.
      *
      * @param resultSet a result set.
-     * @throws SQLException if a database access error occurs.
+     * @throws DataAccessException if a database access error occurs.
      */
-    public void initWithResultSet(ResultSet resultSet) throws SQLException {
-        removeRows();
-        removeColumns();
-        addColumns(resultSet);
-        addRows(resultSet);
+    public void initWithResultSet(ResultSet resultSet) throws DataAccessException {
+        try {
+            removeRows();
+            removeColumns();
+            addColumns(resultSet);
+            addRows(resultSet);
+        } catch (SQLException ex) {
+            throw new DataAccessException("Could not init table with database data.", ex);
+        }
     }
 
     private void removeRows() {
